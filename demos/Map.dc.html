@@ -14,8 +14,7 @@ body{margin:0}
 a{color:#c8aa6e}a:hover{color:#f0d896}
 @keyframes map-spin{to{transform:rotate(360deg)}}
 @keyframes map-pulse{0%,100%{opacity:.2}50%{opacity:1}}
-@keyframes map-walk-x{0%{left:42%}100%{left:68%}}
-@keyframes map-walk-y{0%{top:58%}100%{top:30%}}
+@keyframes map-walk-y{0%{top:40%}100%{top:62%}}
 @keyframes map-blink{0%,49%{opacity:1}50%,100%{opacity:0}}
 button:focus-visible{outline:2px solid #f0d896;outline-offset:2px}
 @media (prefers-reduced-motion:reduce){*{animation:none!important}}
@@ -28,21 +27,34 @@ button:focus-visible{outline:2px solid #f0d896;outline-offset:2px}
 <span style="font-family: Cinzel, serif; font-weight: 700; font-size: 13px; letter-spacing: 0.08em; color: #c8aa6e">THE RIFT</span>
 <span style="color: #a09b8c; font-size: 12px">firmware</span>
 <span style="margin-left: auto; display: flex; gap: 16px; font-size: 12px; font-family: 'JetBrains Mono', ui-monospace, monospace">
-<span style="color: #0ac8b9">2 in lane</span>
+<span style="color: #5ff0e3">6 working</span>
 <span style="color: #ff6b7d">1 pinged</span>
-<span style="color: #c8aa6e">1 taken</span>
+<span style="color: #c8aa6e">1 finished</span>
 </span>
 </div>
 
 <div style="flex: 1; display: flex; flex-wrap: wrap; gap: 8px; padding: 8px">
 
-<aside style="flex: 0 1 500px; min-width: 0; display: flex; flex-direction: column; gap: 8px">
+<aside style="flex: 0 1 610px; min-width: 0; display: flex; flex-direction: column; gap: 8px">
 <div style="position: relative; width: 100%; aspect-ratio: 1 / 1; background: #000000; border: 1px solid #785a28; border-radius: 3px; overflow: hidden">
-<img src="/_blob/a737957941845ea096e7e2c0dde2ed93" alt="Map of the Rift: your base bottom left, the objective top right" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block">
-<sc-for list="{{onMap}}" as="c" hint-placeholder-count="6">
-<button type="button" onClick="{{c.pick}}" aria-pressed="{{c.selected}}" aria-label="{{c.aria}}" style="position: absolute; left: {{c.x}}; top: {{c.y}}; animation: {{c.walk}}; width: 44px; height: 58px; margin: -22px 0 0 -22px; padding: 0; background: none; border: 0; color: inherit; font: inherit; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 3px">
-<span style="position: relative; width: 40px; height: 40px; flex: none">
-<img src="{{c.img}}" alt="" style="width: 40px; height: 40px; display: block; border-radius: 50%; box-shadow: 0 0 0 2px {{c.ring}}, 0 2px 8px #000000">
+<img src="/_blob/a737957941845ea096e7e2c0dde2ed93" alt="Map of the Rift: the build team's base bottom left, the upkeep team's base top right" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block">
+
+<span style="position: absolute; left: 1%; top: 1.5%; padding: 1px 6px; background: #010a13d9; border-radius: 2px; font-family: Cinzel, serif; font-weight: 700; font-size: 10.5px; color: #f0e6d2">TOP · THINK</span>
+<span style="position: absolute; left: 50%; top: 50%; margin: 18px 0 0 14px; padding: 1px 6px; background: #010a13d9; border-radius: 2px; font-family: Cinzel, serif; font-weight: 700; font-size: 10.5px; color: #f0e6d2">MID · MAKE</span>
+<span style="position: absolute; right: 1%; bottom: 1.5%; padding: 1px 6px; background: #010a13d9; border-radius: 2px; font-family: Cinzel, serif; font-weight: 700; font-size: 10.5px; color: #f0e6d2">BOT · PROVE</span>
+<span style="position: absolute; left: 3%; bottom: 13%; padding: 1px 6px; background: #12365cd9; border-radius: 2px; font-family: Cinzel, serif; font-weight: 700; font-size: 10.5px; color: #d6e9ff">BLUE · BUILD</span>
+<span style="position: absolute; right: 3%; top: 13%; padding: 1px 6px; background: #5c1622d9; border-radius: 2px; font-family: Cinzel, serif; font-weight: 700; font-size: 10.5px; color: #ffd6db">RED · UPKEEP</span>
+
+<sc-for list="{{spots}}" as="s" hint-placeholder-count="14">
+<span style="position: absolute; left: {{s.x}}; top: {{s.y}}; transform: translate(-50%, -50%); padding: 0 5px; background: #010a13b3; border: 1px solid {{s.color}}; border-radius: 8px; font-size: 10px; line-height: 15px; color: #f0e6d2; white-space: nowrap">{{s.label}}</span>
+</sc-for>
+
+<span aria-hidden="true" style="position: absolute; left: 38%; top: 59.5%; width: 7%; height: 2px; background: #5ff0e3; transform: rotate(-45deg); transform-origin: left center; animation: map-pulse 1.4s ease-in-out infinite"></span>
+
+<sc-for list="{{onMap}}" as="c" hint-placeholder-count="9">
+<button type="button" onClick="{{c.pick}}" aria-pressed="{{c.selected}}" aria-label="{{c.aria}}" style="position: absolute; left: {{c.x}}; top: {{c.y}}; animation: {{c.walk}}; width: 44px; height: 54px; margin: -18px 0 0 -22px; padding: 0; background: none; border: 0; color: inherit; font: inherit; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 3px">
+<span style="position: relative; width: 36px; height: 36px; flex: none">
+<img src="{{c.img}}" alt="" style="width: 36px; height: 36px; display: block; border-radius: 50%; box-shadow: 0 0 0 2px {{c.ring}}, 0 2px 8px #000000">
 <sc-if value="{{c.working}}" hint-placeholder-val="{{false}}">
 <span aria-hidden="true" style="position: absolute; inset: -5px; border-radius: 50%; border: 2px solid transparent; border-top-color: #5ff0e3; animation: map-spin 0.9s linear infinite"></span>
 </sc-if>
@@ -54,36 +66,28 @@ button:focus-visible{outline:2px solid #f0d896;outline-offset:2px}
 <span aria-hidden="true" style="position: absolute; inset: -4px; border-radius: 50%; border: 1px solid #f0e6d2"></span>
 </sc-if>
 </span>
-<span style="padding: 0 5px; background: #010a13cc; border-radius: 2px; font-size: 10.5px; font-weight: 500; line-height: 15px; color: #f0e6d2; white-space: nowrap">{{c.short}}</span>
+<span style="padding: 0 5px; background: {{c.chip}}; border-radius: 2px; font-size: 10.5px; font-weight: 500; line-height: 15px; color: #ffffff; white-space: nowrap">{{c.short}}</span>
 </button>
 </sc-for>
 </div>
 
-<div style="display: flex; flex-direction: column; gap: 6px; padding: 8px 10px; background: #071221; border: 1px solid #3c3220; border-radius: 3px">
-<div style="display: flex; justify-content: space-between; align-items: center">
-<span style="font-family: Cinzel, serif; font-weight: 700; font-size: 11px; letter-spacing: 0.1em; color: #c8aa6e">NOT SUMMONED</span>
-<span style="font-size: 11px; color: #a09b8c">Click to summon</span>
-</div>
-<div style="display: flex; flex-wrap: wrap; gap: 6px">
-<sc-for list="{{bench}}" as="c" hint-placeholder-count="7">
-<button type="button" onClick="{{c.pick}}" aria-pressed="{{c.selected}}" aria-label="{{c.aria}}" style="display: flex; flex-direction: column; align-items: center; gap: 3px; width: 58px; padding: 4px 0; background: {{c.bg}}; border: 1px solid {{c.border}}; border-radius: 2px; color: inherit; font: inherit; cursor: pointer">
-<img src="{{c.img}}" alt="" style="width: 34px; height: 34px; display: block; border-radius: 50%; box-shadow: 0 0 0 1.5px #785a28; opacity: 0.45">
-<span style="font-size: 10.5px; color: #a09b8c">{{c.short}}</span>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 6px 10px; background: #071221; border: 1px solid #3c3220; border-radius: 3px">
+<span style="font-family: Cinzel, serif; font-weight: 700; font-size: 11px; letter-spacing: 0.1em; color: #c8aa6e; margin-right: 6px">NOT SUMMONED</span>
+<sc-for list="{{bench}}" as="c" hint-placeholder-count="4">
+<button type="button" onClick="{{c.pick}}" aria-pressed="{{c.selected}}" aria-label="{{c.aria}}" style="display: flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 8px 0 5px; background: {{c.bg}}; border: 1px solid {{c.border}}; border-radius: 2px; color: inherit; font: inherit; cursor: pointer">
+<img src="{{c.img}}" alt="" style="width: 30px; height: 30px; display: block; border-radius: 50%; box-shadow: 0 0 0 1.5px #785a28; opacity: 0.45">
+<span style="display: flex; flex-direction: column; align-items: flex-start; font-size: 10.5px; color: #a09b8c"><span>{{c.short}}</span><span>{{c.post}}</span></span>
 </button>
 </sc-for>
-</div>
-</div>
-
-<div style="display: flex; flex-wrap: wrap; gap: 12px; padding: 0 2px; font-size: 11px; color: #a09b8c">
-<span>Base: idle</span><span style="color: #5ff0e3">In a lane: working</span><span style="color: #ff6b7d">Ping: needs you</span><span style="color: #c8aa6e">Far base: finished</span>
 </div>
 </aside>
 
-<section style="flex: 999 1 420px; min-width: 0; display: flex; flex-direction: column; background: #06101c; border: 1px solid #c8aa6e; border-radius: 3px; min-height: 420px">
+<div style="flex: 999 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 8px">
+<section style="flex: 1; display: flex; flex-direction: column; background: #06101c; border: 1px solid #c8aa6e; border-radius: 3px; min-height: 300px">
 <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px; min-height: 52px; padding: 6px 12px; border-bottom: 1px solid #3c3220">
 <img src="{{sel.img}}" alt="" style="width: 36px; height: 36px; border-radius: 50%; box-shadow: 0 0 0 1.5px #c8aa6e">
 <span style="display: flex; flex-direction: column; gap: 1px; min-width: 0">
-<span style="font-family: Cinzel, serif; font-weight: 700; font-size: 14px">{{sel.name}} <span style="font-family: Inter, system-ui, sans-serif; font-weight: 400; font-size: 12px; color: #a09b8c">{{sel.title}}</span></span>
+<span style="font-family: Cinzel, serif; font-weight: 700; font-size: 14px">{{sel.name}} <span style="font-family: Inter, system-ui, sans-serif; font-weight: 400; font-size: 12px; color: #a09b8c">{{sel.post}}</span></span>
 <span style="font-size: 11.5px; color: #a09b8c">{{sel.lane}} · {{sel.job}}</span>
 </span>
 <span style="margin-left: auto; font-size: 12px; font-weight: 500; color: {{sel.color}}">{{sel.word}}</span>
@@ -91,11 +95,38 @@ button:focus-visible{outline:2px solid #f0d896;outline-offset:2px}
 <div style="flex: 1; padding: 14px 12px; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 13px; line-height: 1.6; color: #cdbe91; overflow: hidden">
 <div style="color: #a09b8c">~/firmware $ claude -n Viktor</div>
 <div style="color: #f0e6d2; margin-top: 10px">&gt; build the fuel-gauge driver from Heimerdinger's plan</div>
-<div style="margin-top: 10px">Following the plan, one step per commit.</div>
-<div>Writing the driver and its tests, then handing it to Braum.</div>
-<div style="margin-top: 10px; color: #a09b8c">Building<span aria-hidden="true" style="display: inline-block; width: 8px; height: 15px; margin-left: 4px; vertical-align: -2px; background: #c8aa6e; animation: map-blink 1.06s steps(1) infinite"></span></div>
+<div style="margin-top: 10px">Asking Heimerdinger about step 3 of the plan.</div>
+<div style="color: #a09b8c">Waiting for the answer<span aria-hidden="true" style="display: inline-block; width: 8px; height: 15px; margin-left: 4px; vertical-align: -2px; background: #c8aa6e; animation: map-blink 1.06s steps(1) infinite"></span></div>
 </div>
 </section>
+
+<section style="display: flex; flex-wrap: wrap; gap: 14px 22px; padding: 10px 12px; background: #071221; border: 1px solid #3c3220; border-radius: 3px; font-size: 11.5px; line-height: 1.55; color: #a09b8c">
+<div style="flex: 1 1 170px; min-width: 0">
+<div style="font-family: Cinzel, serif; font-weight: 700; font-size: 11px; letter-spacing: 0.08em; color: #c8aa6e">SIDES AND LANES</div>
+<div><span style="color: #9cc8ff">Blue</span> builds new work</div>
+<div><span style="color: #ff9aa6">Red</span> keeps things running</div>
+<div><span style="color: #f0e6d2">Top</span> think: design, docs</div>
+<div><span style="color: #f0e6d2">Mid</span> make: code, bench</div>
+<div><span style="color: #f0e6d2">Bot</span> prove: QA, review, debug, CI</div>
+<div><span style="color: #f0e6d2">Jungle</span> search: scout, regressions</div>
+</div>
+<div style="flex: 1 1 170px; min-width: 0">
+<div style="font-family: Cinzel, serif; font-weight: 700; font-size: 11px; letter-spacing: 0.08em; color: #c8aa6e">WHERE THEY STAND</div>
+<div><span style="color: #f0e6d2">Fountain</span> idle</div>
+<div><span style="color: #f0e6d2">Own lane</span> working</div>
+<div><span style="color: #f0e6d2">A camp</span> a long task of that kind</div>
+<div><span style="color: #f0e6d2">Side by side</span> working together</div>
+<div><span style="color: #ff6b7d">Ping</span> needs you</div>
+<div><span style="color: #f0d896">Own nexus</span> finished</div>
+</div>
+<div style="flex: 1 1 170px; min-width: 0">
+<div style="font-family: Cinzel, serif; font-weight: 700; font-size: 11px; letter-spacing: 0.08em; color: #c8aa6e">OBJECTIVES</div>
+<div><span style="color: #f0e6d2">Baron</span> a release or rollout</div>
+<div><span style="color: #f0e6d2">Dragon</span> a nightly or long run</div>
+<div><span style="color: #f0e6d2">Scuttle</span> a handoff between two</div>
+</div>
+</section>
+</div>
 
 </div>
 </div>
@@ -107,24 +138,45 @@ class Component extends DCLogic {
     this.state = { picked: 'viktor' };
   }
   renderVals() {
-    const WORD = { working: 'In lane', blocked: 'Pinged you', done: 'Objective taken', idle: 'At base', off: 'Not summoned' };
-    const COLOR = { working: '#5ff0e3', blocked: '#ff6b7d', done: '#c8aa6e', idle: '#a09b8c', off: '#a09b8c' };
+    const WORD = { working: 'Working', blocked: 'Pinged you', done: 'Finished', idle: 'At the fountain', off: 'Not summoned' };
+    const COLOR = { working: '#5ff0e3', blocked: '#ff6b7d', done: '#f0d896', idle: '#a09b8c', off: '#a09b8c' };
     const RING = { working: '#0ac8b9', blocked: '#e84057', done: '#f0d896', idle: '#785a28' };
-    // x, y: where on the map, in percent. walk: the lane a working champion paces along.
+    const CHIP = { blue: '#12365ce6', red: '#5c1622e6', none: '#3a3320e6' };
+    // Camps and objectives, in percent of the map. Blue's jungle is the lower-left half, Red's the upper-right.
+    const CAMP = '#785a28';
+    const spots = [
+      { label: 'Baron · release', x: '33%', y: '27%', color: '#b678dd' },
+      { label: 'Dragon · nightly', x: '67%', y: '73%', color: '#f0d896' },
+      { label: 'Scuttle · handoff', x: '26%', y: '38%', color: '#0ac8b9' },
+      { label: 'Scuttle · handoff', x: '74%', y: '62%', color: '#0ac8b9' },
+      { label: 'research', x: '24%', y: '50%', color: CAMP },
+      { label: 'waiting', x: '15%', y: '44%', color: CAMP },
+      { label: 'search', x: '27%', y: '59%', color: CAMP },
+      { label: 'tests', x: '46%', y: '66%', color: CAMP },
+      { label: 'hardware', x: '53%', y: '77%', color: CAMP },
+      { label: 'build', x: '58%', y: '85%', color: CAMP },
+      { label: 'research', x: '76%', y: '50%', color: CAMP },
+      { label: 'waiting', x: '85%', y: '56%', color: CAMP },
+      { label: 'search', x: '73%', y: '41%', color: CAMP },
+      { label: 'tests', x: '54%', y: '34%', color: CAMP },
+      { label: 'hardware', x: '47%', y: '23%', color: CAMP },
+      { label: 'build', x: '42%', y: '15%', color: CAMP },
+    ];
+    // side, post: the champion's team and position. x, y: where it is right now.
     const roster = [
-      { id: 'teemo', img: '/_blob/5f14de5194985ddba7e819b8894434c8', name: 'Teemo', short: 'Teemo', title: 'the Swift Scout', lane: 'SCOUT', job: 'Scouts projects, features, fixes and concepts', st: 'working', x: '10%', y: '58%', walk: 'map-walk-y 7s ease-in-out infinite alternate' },
-      { id: 'heimerdinger', img: '/_blob/1f31c1496b17c3a1e20146e75f95bfdd', name: 'Heimerdinger', short: 'Heimer', title: 'the Revered Inventor', lane: 'ARCHITECT', job: 'Designs the approach and the plan', st: 'idle', x: '14%', y: '76%' },
-      { id: 'viktor', img: '/_blob/2d601977008b725d8eb932e1cdbb90ed', name: 'Viktor', short: 'Viktor', title: 'the Herald of the Arcane', lane: 'CODER', job: 'Builds everything the plan says', st: 'working', x: '42%', y: '90%', walk: 'map-walk-x 6s ease-in-out infinite alternate' },
-      { id: 'jhin', img: '/_blob/239ae220c1bd3603001dd5333fdf928d', name: 'Jhin', short: 'Jhin', title: 'the Virtuoso', lane: 'QA', job: 'Proves the change works', st: 'blocked', x: '50%', y: '50%' },
-      { id: 'braum', img: '/_blob/fca8220d5d6d9a0bd11912605522f748', name: 'Braum', short: 'Braum', title: 'the Heart of the Freljord', lane: 'REVIEW', job: 'Reviews pull requests', st: 'done', x: '80%', y: '20%' },
-      { id: 'caitlyn', img: '/_blob/9face4f501892ffac696fd623f186462', name: 'Caitlyn', short: 'Caitlyn', title: 'the Sheriff of Piltover', lane: 'DEBUG', job: 'Finds the root cause', st: 'idle', x: '25%', y: '86%' },
-      { id: 'ekko', img: '/_blob/5b7d7b5a14572221b1b011573d038915', name: 'Ekko', short: 'Ekko', title: 'the Boy Who Shattered Time', lane: 'REGRESSIONS', job: 'Bisects and hunts regressions', st: 'off' },
-      { id: 'orianna', img: '/_blob/7b13295bb35bd568a35b91d98c0f1bf8', name: 'Orianna', short: 'Orianna', title: 'the Lady of Clockwork', lane: 'BENCH', job: 'Runs the bench and reads measurements', st: 'off' },
-      { id: 'blitzcrank', img: '/_blob/d119db648fef6e94e40954a9cb8eaf27', name: 'Blitzcrank', short: 'Blitz', title: 'the Great Steam Golem', lane: 'CI', job: 'Branches, pull requests and CI', st: 'off' },
-      { id: 'zilean', img: '/_blob/e3196df7388aa63976c1ecb1d8adf04d', name: 'Zilean', short: 'Zilean', title: 'the Chronokeeper', lane: 'NIGHTLIES', job: 'Nightly and long runs', st: 'off' },
-      { id: 'ryze', img: '/_blob/b596de46c93de836e84a395b87daba10', name: 'Ryze', short: 'Ryze', title: 'the Rune Mage', lane: 'DOCS', job: 'Writes ADRs, SOPs and changelogs', st: 'off' },
-      { id: 'twistedfate', img: '/_blob/60284766d9a6df49cc089205738ba314', name: 'Twisted Fate', short: 'TF', title: 'the Card Master', lane: 'FLEET', job: 'Releases and fleet rollouts', st: 'off' },
-      { id: 'bard', img: '/_blob/0ef1bad0101e2a0a369a3b446da05603', name: 'Bard', short: 'Bard', title: 'the Wandering Caretaker', lane: 'SIDE QUESTS', job: 'Takes the side jobs', st: 'off' },
+      { id: 'heimerdinger', img: '/_blob/1f31c1496b17c3a1e20146e75f95bfdd', name: 'Heimerdinger', short: 'Heimer', side: 'blue', post: 'Blue top', lane: 'ARCHITECT', job: 'Designs everything', st: 'working', x: '37%', y: '63%' },
+      { id: 'teemo', img: '/_blob/5f14de5194985ddba7e819b8894434c8', name: 'Teemo', short: 'Teemo', side: 'blue', post: 'Blue jungle', lane: 'SCOUT', job: 'Scouts projects, features, fixes and concepts', st: 'working', x: '24%', y: '45%' },
+      { id: 'viktor', img: '/_blob/2d601977008b725d8eb932e1cdbb90ed', name: 'Viktor', short: 'Viktor', side: 'blue', post: 'Blue mid', lane: 'CODER', job: 'Writes all the code', st: 'working', x: '44%', y: '56%' },
+      { id: 'jhin', img: '/_blob/239ae220c1bd3603001dd5333fdf928d', name: 'Jhin', short: 'Jhin', side: 'blue', post: 'Blue bot', lane: 'QA', job: 'Proves the change works', st: 'blocked', x: '44%', y: '92%' },
+      { id: 'braum', img: '/_blob/fca8220d5d6d9a0bd11912605522f748', name: 'Braum', short: 'Braum', side: 'blue', post: 'Blue support', lane: 'REVIEW', job: 'Reviews pull requests', st: 'done', x: '13%', y: '82%' },
+      { id: 'ryze', img: '/_blob/b596de46c93de836e84a395b87daba10', name: 'Ryze', short: 'Ryze', side: 'red', post: 'Red top', lane: 'DOCS', job: 'Writes ADRs, SOPs and changelogs', st: 'idle', x: '93%', y: '6%' },
+      { id: 'ekko', img: '/_blob/5b7d7b5a14572221b1b011573d038915', name: 'Ekko', short: 'Ekko', side: 'red', post: 'Red jungle', lane: 'REGRESSIONS', job: 'Bisects and hunts regressions', st: 'off' },
+      { id: 'orianna', img: '/_blob/7b13295bb35bd568a35b91d98c0f1bf8', name: 'Orianna', short: 'Orianna', side: 'red', post: 'Red mid', lane: 'BENCH', job: 'Runs the bench and reads measurements', st: 'working', x: '63%', y: '37%' },
+      { id: 'caitlyn', img: '/_blob/9face4f501892ffac696fd623f186462', name: 'Caitlyn', short: 'Caitlyn', side: 'red', post: 'Red bot', lane: 'DEBUG', job: 'Finds the root cause', st: 'working', x: '91%', y: '40%', walk: 'map-walk-y 7s ease-in-out infinite alternate' },
+      { id: 'blitzcrank', img: '/_blob/d119db648fef6e94e40954a9cb8eaf27', name: 'Blitzcrank', short: 'Blitz', side: 'red', post: 'Red support', lane: 'CI', job: 'Branches, pull requests and CI', st: 'off' },
+      { id: 'zilean', img: '/_blob/e3196df7388aa63976c1ecb1d8adf04d', name: 'Zilean', short: 'Zilean', side: 'none', post: 'Dragon', lane: 'NIGHTLIES', job: 'Nightly and long runs', st: 'working', x: '67%', y: '67%' },
+      { id: 'twistedfate', img: '/_blob/60284766d9a6df49cc089205738ba314', name: 'Twisted Fate', short: 'TF', side: 'none', post: 'Baron', lane: 'FLEET', job: 'Releases and fleet rollouts', st: 'off' },
+      { id: 'bard', img: '/_blob/0ef1bad0101e2a0a369a3b446da05603', name: 'Bard', short: 'Bard', side: 'none', post: 'River', lane: 'SIDE QUESTS', job: 'Takes the side jobs', st: 'off' },
     ];
     const picked = this.state.picked;
     const champs = roster.map((c) => {
@@ -137,14 +189,16 @@ class Component extends DCLogic {
         word: WORD[c.st],
         color: COLOR[c.st],
         ring: RING[c.st] || '#785a28',
+        chip: CHIP[c.side],
         walk: c.walk || 'none',
-        aria: c.name + ', ' + WORD[c.st],
+        aria: c.name + ', ' + c.post + ', ' + WORD[c.st],
         border: selected ? '#c8aa6e' : 'transparent',
         bg: selected ? '#17304d' : 'transparent',
         pick: () => this.setState({ picked: c.id }),
       };
     });
     return {
+      spots,
       onMap: champs.filter((c) => c.st !== 'off'),
       bench: champs.filter((c) => c.st === 'off'),
       sel: champs.find((c) => c.selected) || champs[0],
