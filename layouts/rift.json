@@ -13,6 +13,7 @@
     12
   ],
   "preview": "layouts/rift.svg",
+  "toast": "rift",
   "divider": {
     "width": 1,
     "color": "border"

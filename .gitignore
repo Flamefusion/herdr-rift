@@ -1,0 +1,5 @@
+# Riot's art is downloaded by install.sh, never committed.
+mods/rift/art/*.png
+# Written per machine by bin/rift-setup.
+mods/rift/settings/
+.DS_Store

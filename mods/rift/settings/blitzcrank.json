@@ -1,7 +1,0 @@
-{
-  "hooks": {
-    "PreToolUse": [{ "matcher": "*", "hooks": [{ "type": "command", "command": "\"$HOME/.config/herdr-app/mods/rift/bin/rift-hook\" blitzcrank" }] }],
-    "PostToolUse": [{ "matcher": "*", "hooks": [{ "type": "command", "command": "\"$HOME/.config/herdr-app/mods/rift/bin/rift-hook\" blitzcrank" }] }],
-    "Stop": [{ "hooks": [{ "type": "command", "command": "\"$HOME/.config/herdr-app/mods/rift/bin/rift-hook\" blitzcrank" }] }]
-  }
-}

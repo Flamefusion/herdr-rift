@@ -2,7 +2,13 @@
 """Claude Code hook: records what a champion is doing so the Rift map can show it.
 
 Usage (from settings/<id>.json): rift-hook <champion-id>, hook JSON on stdin.
-Writes <app home>/rift-state/<champion-id>.json. Never blocks or fails the tool.
+Keeps <app home>/rift-state/<champion-id>.json:
+  activity, since   the kind of long task running now (a camp, Baron, Dragon), or null
+  needs             "approve" (a permission prompt) or "answer" (a question), or null
+  fail, fail_at     the kind of task that last failed, and when
+  terminal          the hc terminal the champion runs in
+A message to another champion (the SendMessage tool) is logged to handoffs.jsonl.
+Never blocks or fails the tool. `touch rift-state/.debug` logs every event to debug.jsonl.
 """
 import json
 import os
@@ -10,12 +16,19 @@ import re
 import sys
 import time
 
+RELEASE = re.compile(r"\b(git\s+tag|git\s+push\b.*--tags|gh\s+release|dpkg-buildpackage|debuild|dch|twine\s+upload|(npm|cargo)\s+publish|make\s+(release|deb|dist|package)|deploy\w*)\b")
+NIGHTLY = re.compile(r"nightly|soak|overnight|endurance", re.I)
 TESTS = re.compile(r"\b(pytest|ctest|twister|tox|unittest|make\s+(test|check|validate)|west\s+test|(npm|pnpm|yarn)\s+(run\s+)?test|cargo\s+test|go\s+test)\b")
 HARDWARE = re.compile(r"\b(nrfjprog|nrfutil|west\s+flash|pyocd|JLinkExe|openocd|mcumgr|dfu-util|renode|ssh|scp|rsync)\b")
-BUILD = re.compile(r"\b(make|cmake|ninja|west\s+build|cargo\s+build|gcc|clang|dpkg-buildpackage|docker\s+build|(npm|pnpm|yarn)\s+(run\s+)?build)\b")
+BUILD = re.compile(r"\b(make|cmake|ninja|west\s+build|cargo\s+build|gcc|clang|docker\s+build|(npm|pnpm|yarn)\s+(run\s+)?build)\b")
 WAITING = re.compile(r"(^|[;&|]\s*)sleep\b|\bgh\s+run\s+watch\b|--watch\b")
 SEARCH = re.compile(r"\b(rg|grep|find|fd|ag|git\s+(log|blame|grep|bisect|show|diff))\b")
 DOCS = re.compile(r"\.(md|rst|txt|pdf|adoc|html?)$", re.I)
+BASH = (("nightly", NIGHTLY), ("release", RELEASE), ("tests", TESTS), ("hardware", HARDWARE), ("build", BUILD), ("waiting", WAITING), ("search", SEARCH))
+# A failure of one of these is worth showing on the map.
+LOUD = ("tests", "build", "hardware", "release", "nightly")
+QUESTIONS = ("AskUserQuestion", "ExitPlanMode")
+HERE = os.path.dirname(os.path.abspath(__file__))
 
 
 def classify(tool, inp):
@@ -27,10 +40,37 @@ def classify(tool, inp):
         return "search"
     if tool == "Bash":
         cmd = str(inp.get("command", ""))
-        for name, rx in (("tests", TESTS), ("hardware", HARDWARE), ("build", BUILD), ("waiting", WAITING), ("search", SEARCH)):
+        for name, rx in BASH:
             if rx.search(cmd):
                 return name
     return None
+
+
+def roster():
+    text = open(os.path.join(HERE, "..", "roster.js")).read()
+    return {i: n for i, n in re.findall(r'id:\s*"([^"]+)",\s*name:\s*"([^"]+)"', text)}
+
+
+def champion_named(who):
+    key = re.sub(r"\s*\[[^\]]*\]\s*$", "", str(who)).lower().replace(" ", "")
+    for cid, name in roster().items():
+        if key in (cid, name.lower().replace(" ", "")):
+            return cid
+    return None
+
+
+def write(path, value):
+    tmp = path + ".%d.tmp" % os.getpid()
+    with open(tmp, "w") as f:
+        f.write(value)
+    os.replace(tmp, path)
+
+
+def log_handoff(folder, src, dst):
+    log = os.path.join(folder, "handoffs.jsonl")
+    lines = open(log).read().splitlines()[-199:] if os.path.exists(log) else []
+    lines.append(json.dumps({"from": src, "to": dst, "at": int(time.time() * 1000)}))
+    write(log, "\n".join(lines) + "\n")
 
 
 def main():
@@ -41,17 +81,51 @@ def main():
         event = json.load(sys.stdin)
     except Exception:
         return
-    activity = None
-    if event.get("hook_event_name") == "PreToolUse":
-        activity = classify(event.get("tool_name", ""), event.get("tool_input") or {})
     home = os.environ.get("HERDR_APP_HOME") or os.path.expanduser("~/.config/herdr-app")
     folder = os.path.join(home, "rift-state")
     os.makedirs(folder, exist_ok=True)
+    if os.path.exists(os.path.join(folder, ".debug")):
+        with open(os.path.join(folder, "debug.jsonl"), "a") as f:
+            f.write(json.dumps({"champ": champ, "event": event})[:4000] + "\n")
+
     path = os.path.join(folder, champ + ".json")
-    tmp = path + ".%d.tmp" % os.getpid()
-    with open(tmp, "w") as f:
-        json.dump({"champ": champ, "activity": activity, "since": int(time.time() * 1000)}, f)
-    os.replace(tmp, path)
+    try:
+        state = json.load(open(path))
+    except Exception:
+        state = {}
+    now = int(time.time() * 1000)
+    name = event.get("hook_event_name", "")
+    tool = event.get("tool_name", "")
+    inp = event.get("tool_input") or {}
+    state["champ"] = champ
+    state["terminal"] = os.environ.get("HC_TERMINAL_ID") or state.get("terminal")
+
+    if name == "PreToolUse":
+        state["activity"], state["since"] = classify(tool, inp), now
+        state["needs"] = "answer" if tool in QUESTIONS else None
+        if tool == "SendMessage":
+            other = champion_named(inp.get("to", ""))
+            if other and other != champ:
+                log_handoff(folder, champ, other)
+    elif name == "PermissionRequest":
+        state["needs"] = "answer" if tool in QUESTIONS else "approve"
+    elif name == "Notification":
+        kind = event.get("notification_type", "")
+        if kind == "permission_prompt" and not state.get("needs"):
+            state["needs"] = "approve"
+        elif kind == "elicitation_dialog":
+            state["needs"] = "answer"
+    elif name == "PostToolUseFailure":
+        kind = classify(tool, inp)
+        if kind in LOUD and not event.get("is_interrupt"):
+            state["fail"], state["fail_at"] = kind, now
+        state["activity"], state["since"], state["needs"] = None, now, None
+    else:
+        # PostToolUse, Stop, UserPromptSubmit, SessionStart, SessionEnd: nothing long is running.
+        state["activity"], state["since"], state["needs"] = None, now, None
+        if name == "SessionEnd":
+            state["terminal"] = None
+    write(path, json.dumps(state))
 
 
 try:

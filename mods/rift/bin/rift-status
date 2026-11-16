@@ -1,0 +1,64 @@
+#!/usr/bin/env python3
+"""Claude Code status line for a champion: records how full its context is, for the map.
+
+Usage (from settings/<id>.json): rift-status <champion-id>, status JSON on stdin.
+Writes <app home>/rift-state/<champion-id>.ctx.json, then prints whatever the person's
+own status line (in ~/.claude/settings.json) prints, so the terminal looks the same.
+"""
+import json
+import os
+import re
+import subprocess
+import sys
+import time
+
+
+def record(champ, data):
+    home = os.environ.get("HERDR_APP_HOME") or os.path.expanduser("~/.config/herdr-app")
+    folder = os.path.join(home, "rift-state")
+    os.makedirs(folder, exist_ok=True)
+    window = data.get("context_window") or {}
+    used = window.get("used_percentage")
+    if used is None and window.get("remaining_percentage") is not None:
+        used = 100 - window["remaining_percentage"]
+    out = {
+        "used": used,
+        "cost": (data.get("cost") or {}).get("total_cost_usd"),
+        "model": (data.get("model") or {}).get("display_name"),
+        "at": int(time.time() * 1000),
+    }
+    path = os.path.join(folder, champ + ".ctx.json")
+    tmp = path + ".%d.tmp" % os.getpid()
+    with open(tmp, "w") as f:
+        json.dump(out, f)
+    os.replace(tmp, path)
+
+
+def own_status_line(raw):
+    try:
+        line = json.load(open(os.path.expanduser("~/.claude/settings.json"))).get("statusLine") or {}
+    except Exception:
+        return ""
+    command = line.get("command", "")
+    if line.get("type") != "command" or not command or "rift-status" in command:
+        return ""
+    done = subprocess.run(command, shell=True, input=raw, capture_output=True, text=True, timeout=5)
+    return done.stdout
+
+
+def main():
+    raw = sys.stdin.read()
+    champ = re.sub(r"[^a-z0-9_-]", "", (sys.argv[1] if len(sys.argv) > 1 else "").lower())
+    try:
+        if champ:
+            record(champ, json.loads(raw))
+    except Exception:
+        pass
+    try:
+        sys.stdout.write(own_status_line(raw))
+    except Exception:
+        pass
+
+
+main()
+sys.exit(0)

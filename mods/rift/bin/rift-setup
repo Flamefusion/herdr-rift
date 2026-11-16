@@ -1,0 +1,71 @@
+#!/usr/bin/env python3
+"""Writes the per-champion files that depend on this machine. Run by install.sh.
+
+Usage: rift-setup <herdr app home>
+  <home>/mods/rift/settings/<id>.json   Claude Code settings for that champion: the map's hooks,
+                                        the context status line, and leave to run rift-tell
+  ~/.config/herdr-core/templates/<id>.md  an hc template, so any agent can start a champion as
+                                        a helper: hc run --bg --name teemo teemo "scout X"
+"""
+import json
+import os
+import re
+import sys
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+EVENTS = ("PreToolUse", "PostToolUse", "PostToolUseFailure", "PermissionRequest", "Notification",
+          "UserPromptSubmit", "SessionStart", "SessionEnd", "Stop")
+WITH_MATCHER = ("PreToolUse", "PostToolUse", "PostToolUseFailure", "PermissionRequest")
+MARK = "<!-- written by herdr-rift's rift-setup; edit roles/ in the repo instead -->"
+
+
+def roster():
+    text = open(os.path.join(HERE, "..", "roster.js")).read()
+    return re.findall(r'id:\s*"([^"]+)",\s*name:\s*"([^"]+)".*?lane:\s*"([^"]+)"', text)
+
+
+def main():
+    home = os.path.abspath(sys.argv[1]) if len(sys.argv) > 1 else os.path.expanduser("~/.config/herdr-app")
+    mod = os.path.join(home, "mods", "rift")
+    user = os.path.expanduser("~")
+    tell = os.path.join(mod, "bin", "rift-tell")
+    # A permission rule matches the command as typed, so allow each way of writing the path.
+    spellings = [tell]
+    if tell.startswith(user + os.sep):
+        rest = tell[len(user):]
+        spellings += ["~" + rest, "$HOME" + rest, '"$HOME"' + rest]
+    os.makedirs(os.path.join(mod, "settings"), exist_ok=True)
+    templates = os.path.expanduser("~/.config/herdr-core/templates")
+    os.makedirs(templates, exist_ok=True)
+
+    for cid, name, lane in roster():
+        hook = {"type": "command", "command": '"%s" %s' % (os.path.join(mod, "bin", "rift-hook"), cid)}
+        hooks = {}
+        for event in EVENTS:
+            entry = {"hooks": [hook]}
+            if event in WITH_MATCHER:
+                entry["matcher"] = "*"
+            hooks[event] = [entry]
+        settings = {
+            "hooks": hooks,
+            "statusLine": {"type": "command", "command": '"%s" %s' % (os.path.join(mod, "bin", "rift-status"), cid)},
+            "permissions": {"allow": ["Bash(%s:*)" % s for s in spellings]},
+        }
+        path = os.path.join(mod, "settings", cid + ".json")
+        with open(path, "w") as f:
+            json.dump(settings, f, indent=2)
+            f.write("\n")
+
+        target = os.path.join(templates, cid + ".md")
+        if os.path.exists(target) and MARK not in open(target).read():
+            print("Left %s alone: it is not ours." % target)
+            continue
+        brief = open(os.path.join(mod, "roles", cid + ".md")).read()
+        command = 'claude --settings "%s" -n "%s"' % (path, name)
+        with open(target, "w") as f:
+            f.write("---\nname: %s\ndescription: %s, the squad's %s. Start with a task.\ncommand: %s\n---\n%s\n\n%s"
+                    % (cid, name, lane.lower(), command, MARK, brief))
+    print("Wrote settings for %d champions and their hc templates." % len(roster()))
+
+
+main()
