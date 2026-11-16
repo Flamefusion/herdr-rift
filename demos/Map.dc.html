@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Rift map layout</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+body{margin:0}
+a{color:#c8aa6e}a:hover{color:#f0d896}
+@keyframes map-spin{to{transform:rotate(360deg)}}
+@keyframes map-pulse{0%,100%{opacity:.2}50%{opacity:1}}
+@keyframes map-walk-x{0%{left:42%}100%{left:68%}}
+@keyframes map-walk-y{0%{top:58%}100%{top:30%}}
+@keyframes map-blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+button:focus-visible{outline:2px solid #f0d896;outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</helmet>
+<div style="display: flex; flex-direction: column; min-height: 800px; background: #010a13; color: #f0e6d2; font-family: Inter, system-ui, sans-serif; font-size: 13px">
+
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 14px; min-height: 38px; padding: 0 14px 0 76px; background: #071221; border-bottom: 1px solid #3c3220">
+<img src="/_blob/ca0a4f592577b4fcd0427d2fbb87903b" alt="" style="width: 18px; height: 18px">
+<span style="font-family: Cinzel, serif; font-weight: 700; font-size: 13px; letter-spacing: 0.08em; color: #c8aa6e">THE RIFT</span>
+<span style="color: #a09b8c; font-size: 12px">firmware</span>
+<span style="margin-left: auto; display: flex; gap: 16px; font-size: 12px; font-family: 'JetBrains Mono', ui-monospace, monospace">
+<span style="color: #0ac8b9">2 in lane</span>
+<span style="color: #ff6b7d">1 pinged</span>
+<span style="color: #c8aa6e">1 taken</span>
+</span>
+</div>
+
+<div style="flex: 1; display: flex; flex-wrap: wrap; gap: 8px; padding: 8px">
+
+<aside style="flex: 0 1 500px; min-width: 0; display: flex; flex-direction: column; gap: 8px">
+<div style="position: relative; width: 100%; aspect-ratio: 1 / 1; background: #000000; border: 1px solid #785a28; border-radius: 3px; overflow: hidden">
+<img src="/_blob/a737957941845ea096e7e2c0dde2ed93" alt="Map of the Rift: your base bottom left, the objective top right" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block">
+<sc-for list="{{onMap}}" as="c" hint-placeholder-count="6">
+<button type="button" onClick="{{c.pick}}" aria-pressed="{{c.selected}}" aria-label="{{c.aria}}" style="position: absolute; left: {{c.x}}; top: {{c.y}}; animation: {{c.walk}}; width: 44px; height: 58px; margin: -22px 0 0 -22px; padding: 0; background: none; border: 0; color: inherit; font: inherit; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 3px">
+<span style="position: relative; width: 40px; height: 40px; flex: none">
+<img src="{{c.img}}" alt="" style="width: 40px; height: 40px; display: block; border-radius: 50%; box-shadow: 0 0 0 2px {{c.ring}}, 0 2px 8px #000000">
+<sc-if value="{{c.working}}" hint-placeholder-val="{{false}}">
+<span aria-hidden="true" style="position: absolute; inset: -5px; border-radius: 50%; border: 2px solid transparent; border-top-color: #5ff0e3; animation: map-spin 0.9s linear infinite"></span>
+</sc-if>
+<sc-if value="{{c.blocked}}" hint-placeholder-val="{{false}}">
+<span aria-hidden="true" style="position: absolute; inset: -9px; border-radius: 50%; border: 3px solid #e84057; animation: map-pulse 0.9s ease-in-out infinite"></span>
+<span aria-hidden="true" style="position: absolute; top: -6px; right: -6px; width: 17px; height: 17px; border-radius: 50%; background: #e84057; color: #ffffff; font-size: 11px; font-weight: 600; line-height: 17px; text-align: center">!</span>
+</sc-if>
+<sc-if value="{{c.selected}}" hint-placeholder-val="{{false}}">
+<span aria-hidden="true" style="position: absolute; inset: -4px; border-radius: 50%; border: 1px solid #f0e6d2"></span>
+</sc-if>
+</span>
+<span style="padding: 0 5px; background: #010a13cc; border-radius: 2px; font-size: 10.5px; font-weight: 500; line-height: 15px; color: #f0e6d2; white-space: nowrap">{{c.short}}</span>
+</button>
+</sc-for>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 6px; padding: 8px 10px; background: #071221; border: 1px solid #3c3220; border-radius: 3px">
+<div style="display: flex; justify-content: space-between; align-items: center">
+<span style="font-family: Cinzel, serif; font-weight: 700; font-size: 11px; letter-spacing: 0.1em; color: #c8aa6e">NOT SUMMONED</span>
+<span style="font-size: 11px; color: #a09b8c">Click to summon</span>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 6px">
+<sc-for list="{{bench}}" as="c" hint-placeholder-count="7">
+<button type="button" onClick="{{c.pick}}" aria-pressed="{{c.selected}}" aria-label="{{c.aria}}" style="display: flex; flex-direction: column; align-items: center; gap: 3px; width: 58px; padding: 4px 0; background: {{c.bg}}; border: 1px solid {{c.border}}; border-radius: 2px; color: inherit; font: inherit; cursor: pointer">
+<img src="{{c.img}}" alt="" style="width: 34px; height: 34px; display: block; border-radius: 50%; box-shadow: 0 0 0 1.5px #785a28; opacity: 0.45">
+<span style="font-size: 10.5px; color: #a09b8c">{{c.short}}</span>
+</button>
+</sc-for>
+</div>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 12px; padding: 0 2px; font-size: 11px; color: #a09b8c">
+<span>Base: idle</span><span style="color: #5ff0e3">In a lane: working</span><span style="color: #ff6b7d">Ping: needs you</span><span style="color: #c8aa6e">Far base: finished</span>
+</div>
+</aside>
+
+<section style="flex: 999 1 420px; min-width: 0; display: flex; flex-direction: column; background: #06101c; border: 1px solid #c8aa6e; border-radius: 3px; min-height: 420px">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px; min-height: 52px; padding: 6px 12px; border-bottom: 1px solid #3c3220">
+<img src="{{sel.img}}" alt="" style="width: 36px; height: 36px; border-radius: 50%; box-shadow: 0 0 0 1.5px #c8aa6e">
+<span style="display: flex; flex-direction: column; gap: 1px; min-width: 0">
+<span style="font-family: Cinzel, serif; font-weight: 700; font-size: 14px">{{sel.name}} <span style="font-family: Inter, system-ui, sans-serif; font-weight: 400; font-size: 12px; color: #a09b8c">{{sel.title}}</span></span>
+<span style="font-size: 11.5px; color: #a09b8c">{{sel.lane}} · {{sel.job}}</span>
+</span>
+<span style="margin-left: auto; font-size: 12px; font-weight: 500; color: {{sel.color}}">{{sel.word}}</span>
+</div>
+<div style="flex: 1; padding: 14px 12px; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 13px; line-height: 1.6; color: #cdbe91; overflow: hidden">
+<div style="color: #a09b8c">~/firmware $ claude -n Viktor</div>
+<div style="color: #f0e6d2; margin-top: 10px">&gt; build the fuel-gauge driver from Heimerdinger's plan</div>
+<div style="margin-top: 10px">Following the plan, one step per commit.</div>
+<div>Writing the driver and its tests, then handing it to Braum.</div>
+<div style="margin-top: 10px; color: #a09b8c">Building<span aria-hidden="true" style="display: inline-block; width: 8px; height: 15px; margin-left: 4px; vertical-align: -2px; background: #c8aa6e; animation: map-blink 1.06s steps(1) infinite"></span></div>
+</div>
+</section>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { picked: 'viktor' };
+  }
+  renderVals() {
+    const WORD = { working: 'In lane', blocked: 'Pinged you', done: 'Objective taken', idle: 'At base', off: 'Not summoned' };
+    const COLOR = { working: '#5ff0e3', blocked: '#ff6b7d', done: '#c8aa6e', idle: '#a09b8c', off: '#a09b8c' };
+    const RING = { working: '#0ac8b9', blocked: '#e84057', done: '#f0d896', idle: '#785a28' };
+    // x, y: where on the map, in percent. walk: the lane a working champion paces along.
+    const roster = [
+      { id: 'teemo', img: '/_blob/5f14de5194985ddba7e819b8894434c8', name: 'Teemo', short: 'Teemo', title: 'the Swift Scout', lane: 'SCOUT', job: 'Scouts projects, features, fixes and concepts', st: 'working', x: '10%', y: '58%', walk: 'map-walk-y 7s ease-in-out infinite alternate' },
+      { id: 'heimerdinger', img: '/_blob/1f31c1496b17c3a1e20146e75f95bfdd', name: 'Heimerdinger', short: 'Heimer', title: 'the Revered Inventor', lane: 'ARCHITECT', job: 'Designs the approach and the plan', st: 'idle', x: '14%', y: '76%' },
+      { id: 'viktor', img: '/_blob/2d601977008b725d8eb932e1cdbb90ed', name: 'Viktor', short: 'Viktor', title: 'the Herald of the Arcane', lane: 'CODER', job: 'Builds everything the plan says', st: 'working', x: '42%', y: '90%', walk: 'map-walk-x 6s ease-in-out infinite alternate' },
+      { id: 'jhin', img: '/_blob/239ae220c1bd3603001dd5333fdf928d', name: 'Jhin', short: 'Jhin', title: 'the Virtuoso', lane: 'QA', job: 'Proves the change works', st: 'blocked', x: '50%', y: '50%' },
+      { id: 'braum', img: '/_blob/fca8220d5d6d9a0bd11912605522f748', name: 'Braum', short: 'Braum', title: 'the Heart of the Freljord', lane: 'REVIEW', job: 'Reviews pull requests', st: 'done', x: '80%', y: '20%' },
+      { id: 'caitlyn', img: '/_blob/9face4f501892ffac696fd623f186462', name: 'Caitlyn', short: 'Caitlyn', title: 'the Sheriff of Piltover', lane: 'DEBUG', job: 'Finds the root cause', st: 'idle', x: '25%', y: '86%' },
+      { id: 'ekko', img: '/_blob/5b7d7b5a14572221b1b011573d038915', name: 'Ekko', short: 'Ekko', title: 'the Boy Who Shattered Time', lane: 'REGRESSIONS', job: 'Bisects and hunts regressions', st: 'off' },
+      { id: 'orianna', img: '/_blob/7b13295bb35bd568a35b91d98c0f1bf8', name: 'Orianna', short: 'Orianna', title: 'the Lady of Clockwork', lane: 'BENCH', job: 'Runs the bench and reads measurements', st: 'off' },
+      { id: 'blitzcrank', img: '/_blob/d119db648fef6e94e40954a9cb8eaf27', name: 'Blitzcrank', short: 'Blitz', title: 'the Great Steam Golem', lane: 'CI', job: 'Branches, pull requests and CI', st: 'off' },
+      { id: 'zilean', img: '/_blob/e3196df7388aa63976c1ecb1d8adf04d', name: 'Zilean', short: 'Zilean', title: 'the Chronokeeper', lane: 'NIGHTLIES', job: 'Nightly and long runs', st: 'off' },
+      { id: 'ryze', img: '/_blob/b596de46c93de836e84a395b87daba10', name: 'Ryze', short: 'Ryze', title: 'the Rune Mage', lane: 'DOCS', job: 'Writes ADRs, SOPs and changelogs', st: 'off' },
+      { id: 'twistedfate', img: '/_blob/60284766d9a6df49cc089205738ba314', name: 'Twisted Fate', short: 'TF', title: 'the Card Master', lane: 'FLEET', job: 'Releases and fleet rollouts', st: 'off' },
+      { id: 'bard', img: '/_blob/0ef1bad0101e2a0a369a3b446da05603', name: 'Bard', short: 'Bard', title: 'the Wandering Caretaker', lane: 'SIDE QUESTS', job: 'Takes the side jobs', st: 'off' },
+    ];
+    const picked = this.state.picked;
+    const champs = roster.map((c) => {
+      const selected = c.id === picked;
+      return {
+        ...c,
+        selected,
+        working: c.st === 'working',
+        blocked: c.st === 'blocked',
+        word: WORD[c.st],
+        color: COLOR[c.st],
+        ring: RING[c.st] || '#785a28',
+        walk: c.walk || 'none',
+        aria: c.name + ', ' + WORD[c.st],
+        border: selected ? '#c8aa6e' : 'transparent',
+        bg: selected ? '#17304d' : 'transparent',
+        pick: () => this.setState({ picked: c.id }),
+      };
+    });
+    return {
+      onMap: champs.filter((c) => c.st !== 'off'),
+      bench: champs.filter((c) => c.st === 'off'),
+      sel: champs.find((c) => c.selected) || champs[0],
+    };
+  }
+}
+</script>
+</body>
+</html>

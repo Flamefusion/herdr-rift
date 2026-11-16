@@ -16,7 +16,7 @@ The folder is laid out like `~/.config/herdr-app`, so installing is copying `mod
 
 ## How work flows
 
-Teemo scouts, Heimerdinger designs, Viktor builds, Jhin tests, Braum reviews. Caitlyn debugs, Ekko hunts regressions, Orianna runs the bench, Blitzcrank handles branches and CI, Zilean watches nightlies, Ryze documents, Twisted Fate ships, Bard takes the side jobs.
+Teemo scouts, Heimerdinger designs everything, Viktor writes all the code (tests included), Jhin proves it works, Braum reviews the pull request. Caitlyn debugs, Ekko hunts regressions, Orianna runs the bench, Blitzcrank handles branches and CI, Zilean watches nightlies, Ryze documents, Twisted Fate ships, Bard takes the side jobs.
 
 ## Legal
 

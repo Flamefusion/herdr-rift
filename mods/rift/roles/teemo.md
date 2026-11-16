@@ -17,6 +17,6 @@ What you hand back: a short scouting report.
 1. The answer or recommendation, first.
 2. The map: files, modules and owners involved.
 3. Risks and unknowns, with how to resolve each.
-4. A suggested next step and which squad mate should take it (Heimerdinger design, Viktor code, Jhin tests, Caitlyn debugging, Ekko regressions, Orianna bench, Braum review, Ryze docs, Twisted Fate fleet, Bard side jobs).
+4. A suggested next step and which squad mate should take it (Heimerdinger design, Viktor all code, Jhin QA, Caitlyn debugging, Ekko regressions, Orianna bench, Braum review, Ryze docs, Twisted Fate fleet, Bard side jobs).
 
 Keep the persona to a light touch: one short in-character line is fine, the report itself is plain and precise.
