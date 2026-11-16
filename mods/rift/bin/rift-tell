@@ -1,0 +1,78 @@
+#!/usr/bin/env python3
+"""Send a message from one champion to another, and log it so the map shows them together.
+
+Usage: rift-tell <from> <to> <message...>
+The message is typed into the other champion's terminal as its next prompt.
+"""
+import json
+import os
+import re
+import subprocess
+import sys
+import time
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+
+
+def roster():
+    text = open(os.path.join(HERE, "..", "roster.js")).read()
+    return {i: n for i, n in re.findall(r'id:\s*"([^"]+)",\s*name:\s*"([^"]+)"', text)}
+
+
+def resolve(names, who):
+    key = who.lower().replace(" ", "")
+    for cid, name in names.items():
+        if key in (cid, name.lower().replace(" ", "")):
+            return cid
+    return None
+
+
+def terminal_of(name):
+    out = subprocess.run(["herdr-app", "ls"], capture_output=True, text=True, timeout=15).stdout
+    want = name.lower()
+    for space in json.loads(out).get("spaces", []):
+        for tab in space.get("tabs", []):
+            tab_name = str(tab.get("name", "")).lower()
+            if tab_name == want or tab_name.startswith(want + " "):
+                for term in tab.get("terminals", []):
+                    if term.get("app"):
+                        return term.get("terminal")
+    return None
+
+
+def main():
+    if len(sys.argv) < 4:
+        print(__doc__.strip())
+        return 2
+    names = roster()
+    src, dst = resolve(names, sys.argv[1]), resolve(names, sys.argv[2])
+    if not src or not dst:
+        print("Unknown champion. The squad: " + ", ".join(names.values()))
+        return 2
+    message = " ".join(sys.argv[3:]).strip()
+    target = terminal_of(names[dst])
+    if not target:
+        print(f"{names[dst]} is not summoned. Ask the user to summon {names[dst]} from the map, then send again.")
+        return 1
+    text = f"[squad] From {names[src]}: {message}"
+    sent = subprocess.run(["hc", "send", target, text], capture_output=True, text=True, timeout=60)
+    if sent.returncode != 0:
+        print(f"Could not deliver to {names[dst]}: {(sent.stderr or sent.stdout).strip()}")
+        return 1
+    home = os.environ.get("HERDR_APP_HOME") or os.path.expanduser("~/.config/herdr-app")
+    folder = os.path.join(home, "rift-state")
+    os.makedirs(folder, exist_ok=True)
+    log = os.path.join(folder, "handoffs.jsonl")
+    lines = []
+    if os.path.exists(log):
+        lines = open(log).read().splitlines()[-199:]
+    lines.append(json.dumps({"from": src, "to": dst, "at": int(time.time() * 1000)}))
+    tmp = log + ".%d.tmp" % os.getpid()
+    with open(tmp, "w") as f:
+        f.write("\n".join(lines) + "\n")
+    os.replace(tmp, log)
+    print(f"Delivered to {names[dst]}.")
+    return 0
+
+
+sys.exit(main())

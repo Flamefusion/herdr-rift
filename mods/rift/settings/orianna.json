@@ -1,0 +1,7 @@
+{
+  "hooks": {
+    "PreToolUse": [{ "matcher": "*", "hooks": [{ "type": "command", "command": "\"$HOME/.config/herdr-app/mods/rift/bin/rift-hook\" orianna" }] }],
+    "PostToolUse": [{ "matcher": "*", "hooks": [{ "type": "command", "command": "\"$HOME/.config/herdr-app/mods/rift/bin/rift-hook\" orianna" }] }],
+    "Stop": [{ "hooks": [{ "type": "command", "command": "\"$HOME/.config/herdr-app/mods/rift/bin/rift-hook\" orianna" }] }]
+  }
+}
