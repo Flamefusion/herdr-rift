@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Rift HUD layout</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+body{margin:0}
+a{color:#c8aa6e}a:hover{color:#f0d896}
+@keyframes hud-spin{to{transform:rotate(360deg)}}
+@keyframes hud-pulse{0%,100%{opacity:.25}50%{opacity:1}}
+@keyframes hud-bob{0%,100%{top:0}50%{top:-5px}}
+@keyframes hud-channel{0%{width:6%}100%{width:100%}}
+@keyframes hud-blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+button:focus-visible{outline:2px solid #f0d896;outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</helmet>
+<div style="display: flex; flex-direction: column; min-height: 800px; background: #010a13; color: #f0e6d2; font-family: Inter, system-ui, sans-serif; font-size: 13px">
+
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 14px; min-height: 38px; padding: 0 14px 0 76px; background: #071221; border-bottom: 1px solid #3c3220">
+<img src="/_blob/ca0a4f592577b4fcd0427d2fbb87903b" alt="" style="width: 18px; height: 18px">
+<span style="font-family: Cinzel, serif; font-weight: 700; font-size: 13px; letter-spacing: 0.08em; color: #c8aa6e">THE RIFT</span>
+<span style="color: #a09b8c; font-size: 12px">firmware</span>
+<span style="margin-left: auto; display: flex; gap: 16px; font-size: 12px; font-family: 'JetBrains Mono', ui-monospace, monospace">
+<span style="color: #0ac8b9">2 in lane</span>
+<span style="color: #ff6b7d">1 pinged</span>
+<span style="color: #c8aa6e">1 taken</span>
+</span>
+</div>
+
+<div style="flex: 1; display: flex; flex-wrap: wrap; gap: 8px; padding: 8px; min-height: 560px">
+<section style="flex: 3 1 420px; min-width: 0; display: flex; flex-direction: column; background: #06101c; border: 1px solid #c8aa6e; border-radius: 2px">
+<div style="display: flex; align-items: center; gap: 8px; height: 28px; padding: 0 10px; border-bottom: 1px solid #3c3220; font-size: 12px; color: #a09b8c">
+<img src="{{sel.img}}" alt="" style="width: 16px; height: 16px">
+<span style="color: #f0e6d2; font-weight: 500">{{sel.name}}</span><span>{{sel.lane}}</span>
+<span style="margin-left: auto; color: {{sel.color}}">{{sel.word}}</span>
+</div>
+<div style="flex: 1; padding: 14px 12px; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 13px; line-height: 1.6; color: #cdbe91; overflow: hidden">
+<div style="color: #a09b8c">~/firmware $ claude -n Heimerdinger</div>
+<div style="color: #f0e6d2; margin-top: 10px">&gt; add the fuel-gauge driver behind the existing battery contract</div>
+<div style="margin-top: 10px">Reading the contract and the nearest driver first.</div>
+<div>Writing the driver, then its unit tests.</div>
+<div style="margin-top: 10px; color: #a09b8c">Building<span aria-hidden="true" style="display: inline-block; width: 8px; height: 15px; margin-left: 4px; vertical-align: -2px; background: #c8aa6e; animation: hud-blink 1.06s steps(1) infinite"></span></div>
+</div>
+</section>
+<section style="flex: 2 1 300px; min-width: 0; display: flex; flex-direction: column; background: #06101c; border: 1px solid #3c3220; border-radius: 2px">
+<div style="display: flex; align-items: center; gap: 8px; height: 28px; padding: 0 10px; border-bottom: 1px solid #3c3220; font-size: 12px; color: #a09b8c">
+<img src="/_blob/85fd452b71527b45c85384a6750fae8b" alt="" style="width: 16px; height: 16px">
+<span style="color: #f0e6d2; font-weight: 500">Jhin</span><span>TESTS</span>
+<span style="margin-left: auto; color: #ff6b7d; animation: hud-pulse 0.9s ease-in-out infinite">Pinged you</span>
+</div>
+<div style="flex: 1; padding: 14px 12px; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 13px; line-height: 1.6; color: #cdbe91; overflow: hidden">
+<div style="color: #a09b8c">~/test-bench $ claude -n Jhin</div>
+<div style="margin-top: 10px">Four acts: arrange, act, assert, clean up.</div>
+<div style="margin-top: 10px; color: #ff6b7d">Allow this command to run?</div>
+<div style="color: #f0e6d2">1. Yes &nbsp; 2. No</div>
+</div>
+</section>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: center; gap: 18px; padding: 10px 14px 12px; background: #071221; border-top: 1px solid #785a28">
+
+<div style="display: flex; align-items: center; gap: 10px; flex: 1 1 220px; min-width: 0">
+<span style="position: relative; width: 56px; height: 56px; flex: none; animation: hud-bob 0.7s ease-in-out infinite">
+<img src="/_blob/10ca85f9c227745b38d0663f7632e262" alt="" style="width: 56px; height: 56px; display: block">
+</span>
+<span style="display: flex; flex-direction: column; gap: 3px; min-width: 0; padding: 7px 10px; background: #0c1c30; border: 1px solid #785a28; border-radius: 2px 8px 8px 8px">
+<span style="font-family: Cinzel, serif; font-weight: 700; font-size: 12px; color: #ff6b7d">Jhin pinged you</span>
+<span style="font-size: 11px; color: #a09b8c">Waiting on an answer in test-bench.</span>
+</span>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; padding: 8px 10px; background: #0a1a2b; border: 1px solid #785a28; border-radius: 3px">
+<sc-for list="{{champs}}" as="c" hint-placeholder-count="8">
+<button type="button" onClick="{{c.pick}}" aria-pressed="{{c.selected}}" aria-label="{{c.aria}}" style="position: relative; display: flex; flex-direction: column; align-items: center; gap: 5px; width: 66px; padding: 5px 3px 6px; background: {{c.bg}}; border: 1px solid {{c.border}}; border-radius: 2px; color: inherit; font: inherit; cursor: pointer">
+<span style="position: relative; width: 44px; height: 44px">
+<img src="{{c.img}}" alt="" style="width: 44px; height: 44px; display: block; opacity: {{c.imgOpacity}}">
+<sc-if value="{{c.working}}" hint-placeholder-val="{{false}}">
+<span aria-hidden="true" style="position: absolute; inset: -4px; border-radius: 50%; border: 2px solid transparent; border-top-color: #0ac8b9; animation: hud-spin 0.9s linear infinite"></span>
+</sc-if>
+<sc-if value="{{c.blocked}}" hint-placeholder-val="{{false}}">
+<span aria-hidden="true" style="position: absolute; inset: -4px; border-radius: 50%; border: 2px solid #e84057; animation: hud-pulse 0.9s ease-in-out infinite"></span>
+</sc-if>
+<span aria-hidden="true" style="position: absolute; left: -4px; bottom: -4px; min-width: 15px; height: 15px; padding: 0 2px; box-sizing: border-box; background: #010a13; border: 1px solid #785a28; border-radius: 2px; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 10px; line-height: 13px; color: #c8aa6e; text-align: center">{{c.key}}</span>
+</span>
+<span style="font-size: 10.5px; font-weight: 500; color: {{c.nameColor}}; max-width: 60px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{c.short}}</span>
+<span aria-hidden="true" style="display: block; width: 52px; height: 4px; background: #10233a; border-radius: 1px; overflow: hidden">
+<sc-if value="{{c.working}}" hint-placeholder-val="{{false}}"><span style="display: block; height: 4px; background: #0ac8b9; animation: hud-channel {{c.channel}} ease-in-out infinite alternate"></span></sc-if>
+<sc-if value="{{c.solid}}" hint-placeholder-val="{{false}}"><span style="display: block; height: 4px; width: 100%; background: {{c.color}}"></span></sc-if>
+</span>
+</button>
+</sc-for>
+</div>
+
+<div style="display: flex; justify-content: flex-end; flex: 1 1 220px; min-width: 0">
+<div style="display: flex; flex-direction: column; gap: 5px; padding: 8px 10px; background: #0a1a2b; border: 1px solid #3c3220; border-radius: 3px; min-width: 150px">
+<span style="font-family: Cinzel, serif; font-weight: 700; font-size: 10.5px; letter-spacing: 0.1em; color: #c8aa6e">SPACES</span>
+<span style="display: flex; align-items: center; gap: 7px; font-size: 12px"><span aria-hidden="true" style="width: 7px; height: 7px; background: #0ac8b9; transform: rotate(45deg)"></span>firmware</span>
+<span style="display: flex; align-items: center; gap: 7px; font-size: 12px; color: #a09b8c"><span aria-hidden="true" style="width: 7px; height: 7px; background: #e84057; transform: rotate(45deg); animation: hud-pulse 0.9s ease-in-out infinite"></span>test-bench</span>
+<span style="display: flex; align-items: center; gap: 7px; font-size: 12px; color: #a09b8c"><span aria-hidden="true" style="width: 7px; height: 7px; background: #6b6658; transform: rotate(45deg)"></span>side-quests</span>
+</div>
+</div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { picked: 'heimerdinger' };
+  }
+  renderVals() {
+    const WORD = { working: 'In lane', blocked: 'Pinged you', done: 'Objective taken', idle: 'At base', off: 'Not summoned' };
+    const COLOR = { working: '#0ac8b9', blocked: '#ff6b7d', done: '#c8aa6e', idle: '#6b6658', off: '#a09b8c' };
+    const roster = [
+      { id: 'teemo', img: '/_blob/10ca85f9c227745b38d0663f7632e262', name: 'Teemo', short: 'Teemo', lane: 'SCOUT', st: 'working', channel: '2.4s' },
+      { id: 'heimerdinger', img: '/_blob/c9539ae889f9665140799b5e1b15c9a8', name: 'Heimerdinger', short: 'Heimer', lane: 'FIRMWARE', st: 'working', channel: '3.1s' },
+      { id: 'jhin', img: '/_blob/85fd452b71527b45c85384a6750fae8b', name: 'Jhin', short: 'Jhin', lane: 'TESTS', st: 'blocked' },
+      { id: 'caitlyn', img: '/_blob/6f99c7c9f652992ab7916341b697052b', name: 'Caitlyn', short: 'Caitlyn', lane: 'DEBUG', st: 'idle' },
+      { id: 'braum', img: '/_blob/d528067e9fcbca07e6ce66359ffd9e66', name: 'Braum', short: 'Braum', lane: 'REVIEW', st: 'done' },
+      { id: 'ryze', img: '/_blob/ec748fd107bce5f69a0cfacccc8f8f52', name: 'Ryze', short: 'Ryze', lane: 'DOCS', st: 'off' },
+      { id: 'twistedfate', img: '/_blob/5e77c087aa10bebe0bc8bc8cd6a0ba5b', name: 'Twisted Fate', short: 'TF', lane: 'FLEET', st: 'off' },
+      { id: 'bard', img: '/_blob/75cd7fa0eb17e6a4b11f5407253dcf48', name: 'Bard', short: 'Bard', lane: 'SIDE QUESTS', st: 'off' },
+    ];
+    const picked = this.state.picked;
+    const champs = roster.map((c, i) => {
+      const on = c.st !== 'off';
+      const selected = c.id === picked;
+      return {
+        ...c,
+        key: String(i + 1),
+        selected,
+        working: c.st === 'working',
+        blocked: c.st === 'blocked',
+        solid: c.st === 'blocked' || c.st === 'done' || c.st === 'idle',
+        word: WORD[c.st],
+        color: COLOR[c.st],
+        aria: c.name + ', ' + WORD[c.st],
+        nameColor: on ? '#f0e6d2' : '#a09b8c',
+        imgOpacity: on ? 1 : 0.38,
+        channel: c.channel || '2.4s',
+        border: selected ? '#c8aa6e' : 'transparent',
+        bg: selected ? '#17304d' : 'transparent',
+        pick: () => this.setState({ picked: c.id }),
+      };
+    });
+    const sel = champs.find((c) => c.selected) || champs[0];
+    return { champs, sel: { ...sel, color: sel.st === 'idle' ? '#a09b8c' : sel.color } };
+  }
+}
+</script>
+</body>
+</html>

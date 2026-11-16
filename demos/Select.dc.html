@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Rift champion select layout</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+body{margin:0}
+a{color:#0ac8b9}a:hover{color:#5ff0e3}
+@keyframes sel-spin{to{transform:rotate(360deg)}}
+@keyframes sel-pulse{0%,100%{opacity:.25}50%{opacity:1}}
+@keyframes sel-bob{0%,100%{top:0}50%{top:-5px}}
+@keyframes sel-channel{0%{width:6%}100%{width:100%}}
+@keyframes sel-blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+button:focus-visible{outline:2px solid #5ff0e3;outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</helmet>
+<div style="display: flex; flex-direction: column; min-height: 800px; background: #050b14; color: #f0e6d2; font-family: Inter, system-ui, sans-serif; font-size: 13px">
+
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; min-height: 36px; padding: 0 14px 0 76px; background: #0a1622; border-bottom: 1px solid #1e3a4a">
+<img src="/_blob/ca0a4f592577b4fcd0427d2fbb87903b" alt="" style="width: 18px; height: 18px">
+<span style="font-family: Cinzel, serif; font-weight: 700; font-size: 13px; letter-spacing: 0.08em; color: #c8aa6e">THE RIFT</span>
+<span style="margin-left: auto; display: flex; flex-wrap: wrap; gap: 6px">
+<span style="height: 24px; padding: 0 10px; display: flex; align-items: center; border: 1px solid #0ac8b9; border-radius: 12px; font-size: 12px; color: #f0e6d2">firmware</span>
+<span style="height: 24px; padding: 0 10px; display: flex; align-items: center; border: 1px solid #1e3a4a; border-radius: 12px; font-size: 12px; color: #a09b8c">test-bench</span>
+<span style="height: 24px; padding: 0 10px; display: flex; align-items: center; border: 1px solid #1e3a4a; border-radius: 12px; font-size: 12px; color: #a09b8c">side-quests</span>
+</span>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 6px; padding: 12px 10px 8px; background: #0a1622; border-bottom: 1px solid #1e3a4a">
+<sc-for list="{{champs}}" as="c" hint-placeholder-count="8">
+<button type="button" onClick="{{c.pick}}" aria-pressed="{{c.selected}}" style="position: relative; top: {{c.lift}}; flex: 1 1 120px; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 6px 0; background: {{c.bg}}; border: 1px solid {{c.border}}; border-radius: 2px; color: inherit; font: inherit; cursor: pointer; overflow: hidden">
+<span style="position: relative; width: 60px; height: 60px">
+<img src="{{c.img}}" alt="" style="width: 60px; height: 60px; display: block; opacity: {{c.imgOpacity}}">
+<sc-if value="{{c.working}}" hint-placeholder-val="{{false}}">
+<span aria-hidden="true" style="position: absolute; inset: -5px; border-radius: 50%; border: 2px solid transparent; border-top-color: #0ac8b9; animation: sel-spin 0.9s linear infinite"></span>
+</sc-if>
+<sc-if value="{{c.blocked}}" hint-placeholder-val="{{false}}">
+<span aria-hidden="true" style="position: absolute; inset: -5px; border-radius: 50%; border: 2px solid #e84057; animation: sel-pulse 0.9s ease-in-out infinite"></span>
+</sc-if>
+</span>
+<span style="font-family: Cinzel, serif; font-weight: 700; font-size: 12.5px; color: {{c.nameColor}}; max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{c.name}}</span>
+<span style="font-size: 10.5px; letter-spacing: 0.08em; color: #a09b8c">{{c.lane}}</span>
+<span style="align-self: stretch; margin: 2px -6px 0; padding: 4px 0; background: {{c.ribbon}}; font-size: 10.5px; font-weight: 600; color: {{c.ribbonText}}; text-align: center">{{c.word}}</span>
+<span aria-hidden="true" style="align-self: stretch; margin: 0 -6px; height: 3px; background: #10233a; display: block">
+<sc-if value="{{c.working}}" hint-placeholder-val="{{false}}"><span style="display: block; height: 3px; background: #5ff0e3; animation: sel-channel {{c.channel}} ease-in-out infinite alternate"></span></sc-if>
+</span>
+</button>
+</sc-for>
+</div>
+
+<div style="position: relative; flex: 1; display: flex; padding: 8px; min-height: 420px">
+<section style="flex: 1; min-width: 0; display: flex; flex-direction: column; background: #070f1a; border: 1px solid #0ac8b9; border-radius: 2px">
+<div style="display: flex; align-items: center; gap: 8px; height: 30px; padding: 0 10px; border-bottom: 1px solid #1e3a4a; font-size: 12px; color: #a09b8c">
+<img src="{{sel.img}}" alt="" style="width: 16px; height: 16px">
+<span style="color: #f0e6d2; font-weight: 500">{{sel.name}}</span>
+<span>{{sel.title}}</span>
+<span style="margin-left: auto">{{sel.job}}</span>
+</div>
+<div style="flex: 1; padding: 14px 12px; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 13px; line-height: 1.6; color: #cdbe91; overflow: hidden">
+<div style="color: #a09b8c">~/firmware $ claude -n Braum</div>
+<div style="color: #f0e6d2; margin-top: 10px">&gt; review the fuel-gauge driver branch</div>
+<div style="margin-top: 10px; color: #c8aa6e">Verdict: ready after fixes</div>
+<div>Must fix, should fix and notes follow, each with file and line.</div>
+<div style="margin-top: 10px; color: #a09b8c">~/firmware $<span aria-hidden="true" style="display: inline-block; width: 8px; height: 15px; margin-left: 6px; vertical-align: -2px; background: #0ac8b9; animation: sel-blink 1.06s steps(1) infinite"></span></div>
+</div>
+</section>
+
+<div style="position: absolute; right: 22px; bottom: 22px; display: flex; align-items: flex-end; gap: 8px">
+<span style="display: flex; flex-direction: column; gap: 2px; max-width: 200px; padding: 8px 10px; background: #0c1c30; border: 1px solid #785a28; border-radius: 8px 8px 2px 8px; box-shadow: 0 8px 24px #00000080">
+<span style="font-family: Cinzel, serif; font-weight: 700; font-size: 12px; color: #ff6b7d">Jhin pinged you</span>
+<span style="font-size: 11px; color: #a09b8c">Waiting on an answer in test-bench.</span>
+</span>
+<span style="position: relative; width: 60px; height: 60px; flex: none; animation: sel-bob 0.7s ease-in-out infinite">
+<img src="/_blob/10ca85f9c227745b38d0663f7632e262" alt="Teemo" style="width: 60px; height: 60px; display: block">
+<span style="position: absolute; top: -2px; right: -2px; width: 17px; height: 17px; border-radius: 50%; background: #e84057; color: #ffffff; font-size: 10px; font-weight: 600; display: flex; align-items: center; justify-content: center">1</span>
+</span>
+</div>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { picked: 'braum' };
+  }
+  renderVals() {
+    const WORD = { working: 'IN LANE', blocked: 'PINGED YOU', done: 'OBJECTIVE TAKEN', idle: 'AT BASE', off: 'SUMMON' };
+    const RIBBON = { working: '#0b3b3f', blocked: '#5c1622', done: '#4a3a14', idle: '#10233a', off: 'transparent' };
+    const TEXT = { working: '#5ff0e3', blocked: '#ffb3bd', done: '#f0d896', idle: '#a09b8c', off: '#c8aa6e' };
+    const roster = [
+      { id: 'teemo', img: '/_blob/10ca85f9c227745b38d0663f7632e262', name: 'Teemo', title: 'the Swift Scout', lane: 'SCOUT', st: 'working', channel: '2.4s', job: 'Scouts projects, features, fixes and concepts' },
+      { id: 'heimerdinger', img: '/_blob/c9539ae889f9665140799b5e1b15c9a8', name: 'Heimerdinger', title: 'the Revered Inventor', lane: 'FIRMWARE', st: 'working', channel: '3.1s', job: 'Builds firmware' },
+      { id: 'jhin', img: '/_blob/85fd452b71527b45c85384a6750fae8b', name: 'Jhin', title: 'the Virtuoso', lane: 'TESTS', st: 'blocked', job: 'Writes test automation' },
+      { id: 'caitlyn', img: '/_blob/6f99c7c9f652992ab7916341b697052b', name: 'Caitlyn', title: 'the Sheriff', lane: 'DEBUG', st: 'idle', job: 'Finds the root cause' },
+      { id: 'braum', img: '/_blob/d528067e9fcbca07e6ce66359ffd9e66', name: 'Braum', title: 'the Shield', lane: 'REVIEW', st: 'done', job: 'Reviews and guards the branch' },
+      { id: 'ryze', img: '/_blob/ec748fd107bce5f69a0cfacccc8f8f52', name: 'Ryze', title: 'the Rune Mage', lane: 'DOCS', st: 'off', job: 'Writes ADRs, SOPs and changelogs' },
+      { id: 'twistedfate', img: '/_blob/5e77c087aa10bebe0bc8bc8cd6a0ba5b', name: 'Twisted Fate', title: 'the Card Master', lane: 'FLEET', st: 'off', job: 'Releases and fleet rollouts' },
+      { id: 'bard', img: '/_blob/75cd7fa0eb17e6a4b11f5407253dcf48', name: 'Bard', title: 'the Wandering Caretaker', lane: 'SIDE QUESTS', st: 'off', job: 'Takes the side jobs' },
+    ];
+    const picked = this.state.picked;
+    const champs = roster.map((c) => {
+      const on = c.st !== 'off';
+      const selected = c.id === picked;
+      return {
+        ...c,
+        selected,
+        working: c.st === 'working',
+        blocked: c.st === 'blocked',
+        word: WORD[c.st],
+        ribbon: RIBBON[c.st],
+        ribbonText: TEXT[c.st],
+        nameColor: on ? '#c8aa6e' : '#a09b8c',
+        imgOpacity: on ? 1 : 0.38,
+        channel: c.channel || '2.4s',
+        lift: selected ? '-5px' : '0px',
+        border: selected ? '#c8aa6e' : '#1e3a4a',
+        bg: selected ? '#10233a' : '#070f1a',
+        pick: () => this.setState({ picked: c.id }),
+      };
+    });
+    return { champs, sel: champs.find((c) => c.selected) || champs[0] };
+  }
+}
+</script>
+</body>
+</html>

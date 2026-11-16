@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Rift client layout</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+body{margin:0}
+a{color:#c8aa6e}a:hover{color:#f0d896}
+@keyframes rift-spin{to{transform:rotate(360deg)}}
+@keyframes rift-pulse{0%,100%{opacity:.3}50%{opacity:1}}
+@keyframes rift-bob{0%,100%{top:0}50%{top:-4px}}
+@keyframes rift-channel{0%{width:8%}100%{width:100%}}
+@keyframes rift-blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+@keyframes rift-peek{0%,35%{right:-206px}45%,85%{right:0}95%,100%{right:-206px}}
+.rift-drawer:hover{animation-play-state:paused}
+button:focus-visible{outline:2px solid #f0d896;outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</helmet>
+<div style="display: flex; flex-wrap: wrap; min-height: 800px; background: #010a13; color: #f0e6d2; font-family: Inter, system-ui, sans-serif; font-size: 13px">
+
+<aside style="flex: 0 0 268px; display: flex; flex-direction: column; background: #071221; border-right: 1px solid #3c3220; min-width: 0">
+<div style="display: flex; align-items: center; gap: 8px; height: 46px; padding: 0 12px 0 76px">
+<img src="/_blob/ca0a4f592577b4fcd0427d2fbb87903b" alt="" style="width: 20px; height: 20px">
+<span style="font-family: Cinzel, serif; font-weight: 700; font-size: 14px; letter-spacing: 0.08em; color: #c8aa6e">THE RIFT</span>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 2px; padding: 0 8px 8px; border-top: 1px solid #3c3220">
+<div style="display: flex; justify-content: space-between; align-items: center; height: 34px; padding: 4px 8px 0">
+<span style="font-family: Cinzel, serif; font-weight: 700; font-size: 11px; letter-spacing: 0.1em; color: #c8aa6e">SQUAD</span>
+<span style="font-size: 11px; color: #a09b8c">5/8 on the Rift</span>
+</div>
+<sc-for list="{{champs}}" as="c" hint-placeholder-count="8">
+<button type="button" onClick="{{c.pick}}" aria-pressed="{{c.selected}}" style="display: flex; align-items: center; gap: 10px; height: 50px; padding: 0 8px; border: 1px solid {{c.border}}; background: {{c.bg}}; border-radius: 4px; color: inherit; font: inherit; text-align: left; cursor: pointer; width: 100%">
+<span style="position: relative; width: 36px; height: 36px; flex: none">
+<img src="{{c.img}}" alt="" style="width: 36px; height: 36px; display: block; opacity: {{c.imgOpacity}}">
+<sc-if value="{{c.working}}" hint-placeholder-val="{{false}}">
+<span aria-hidden="true" style="position: absolute; inset: -3px; border-radius: 50%; border: 2px solid transparent; border-top-color: #0ac8b9; animation: rift-spin 0.9s linear infinite"></span>
+</sc-if>
+<sc-if value="{{c.blocked}}" hint-placeholder-val="{{false}}">
+<span aria-hidden="true" style="position: absolute; inset: -3px; border-radius: 50%; border: 2px solid #e84057; animation: rift-pulse 0.9s ease-in-out infinite"></span>
+</sc-if>
+</span>
+<span style="display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0">
+<span style="font-family: Cinzel, serif; font-weight: 600; font-size: 13px; color: {{c.nameColor}}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{c.name}}</span>
+<span style="font-size: 11px; color: #a09b8c; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{c.sub}}</span>
+<sc-if value="{{c.working}}" hint-placeholder-val="{{false}}">
+<span aria-hidden="true" style="height: 2px; background: #10233a; border-radius: 1px; overflow: hidden; display: block"><span style="display: block; height: 2px; background: #0ac8b9; animation: rift-channel {{c.channel}} ease-in-out infinite alternate"></span></span>
+</sc-if>
+</span>
+<span style="font-size: 11px; font-weight: 500; color: {{c.wordColor}}; flex: none">{{c.word}}</span>
+</button>
+</sc-for>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 2px; padding: 0 8px 8px; border-top: 1px solid #3c3220; flex: 1">
+<div style="display: flex; align-items: center; height: 34px; padding: 4px 8px 0">
+<span style="font-family: Cinzel, serif; font-weight: 700; font-size: 11px; letter-spacing: 0.1em; color: #c8aa6e">SPACES</span>
+</div>
+<div style="display: flex; align-items: center; gap: 8px; height: 30px; padding: 0 8px; background: #17304d; border-radius: 4px"><span aria-hidden="true" style="width: 8px; height: 8px; background: #0ac8b9; transform: rotate(45deg)"></span><span>firmware</span></div>
+<div style="display: flex; align-items: center; gap: 8px; height: 30px; padding: 0 8px; color: #a09b8c"><span aria-hidden="true" style="width: 8px; height: 8px; background: #c8aa6e; transform: rotate(45deg)"></span><span>test-bench</span></div>
+<div style="display: flex; align-items: center; gap: 8px; height: 30px; padding: 0 8px; color: #a09b8c"><span aria-hidden="true" style="width: 8px; height: 8px; background: #6b6658; transform: rotate(45deg)"></span><span>side-quests</span></div>
+</div>
+</aside>
+
+<main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px; min-height: 42px; padding: 0 10px; background: #071221; border-bottom: 1px solid #3c3220">
+<span style="display: flex; align-items: center; gap: 7px; height: 28px; padding: 0 12px; border: 1px solid #785a28; border-radius: 3px; background: #10233a; color: #f0e6d2"><img src="/_blob/10ca85f9c227745b38d0663f7632e262" alt="" style="width: 16px; height: 16px">Teemo</span>
+<span style="display: flex; align-items: center; gap: 7px; height: 28px; padding: 0 12px; border: 1px solid #3c3220; border-radius: 3px; color: #a09b8c"><img src="/_blob/c9539ae889f9665140799b5e1b15c9a8" alt="" style="width: 16px; height: 16px">Heimerdinger</span>
+<span style="display: flex; align-items: center; gap: 7px; height: 28px; padding: 0 12px; border: 1px solid #3c3220; border-radius: 3px; color: #a09b8c"><img src="/_blob/85fd452b71527b45c85384a6750fae8b" alt="" style="width: 16px; height: 16px">Jhin<span aria-hidden="true" style="width: 7px; height: 7px; border-radius: 50%; background: #e84057; animation: rift-pulse 0.9s ease-in-out infinite"></span></span>
+<span style="display: flex; align-items: center; gap: 7px; height: 28px; padding: 0 12px; border: 1px solid #3c3220; border-radius: 3px; color: #a09b8c"><img src="/_blob/d528067e9fcbca07e6ce66359ffd9e66" alt="" style="width: 16px; height: 16px">Braum<span aria-hidden="true" style="width: 7px; height: 7px; border-radius: 50%; background: #c8aa6e"></span></span>
+</div>
+
+<div style="position: relative; flex: 1; display: flex; padding: 8px; overflow: hidden; min-height: 520px">
+<section style="flex: 1; min-width: 0; display: flex; flex-direction: column; background: #06101c; border: 1px solid #c8aa6e; border-radius: 3px">
+<div style="display: flex; align-items: center; gap: 8px; height: 30px; padding: 0 10px; border-bottom: 1px solid #3c3220; color: #a09b8c; font-size: 12px">
+<img src="{{sel.img}}" alt="" style="width: 16px; height: 16px">
+<span style="color: #f0e6d2; font-weight: 500">{{sel.name}}</span>
+<span>{{sel.title}}</span>
+<span style="margin-left: auto; color: {{sel.wordColor}}">{{sel.word}}</span>
+</div>
+<div style="flex: 1; padding: 14px 12px; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 13px; line-height: 1.6; color: #cdbe91; overflow: hidden">
+<div style="color: #a09b8c">~/firmware $ claude -n Teemo</div>
+<div style="color: #f0e6d2; margin-top: 10px">&gt; scout the options for a battery fuel-gauge driver</div>
+<div style="margin-top: 10px; color: #0ac8b9">Scouting report</div>
+<div>1. Recommendation first, then the map.</div>
+<div>2. Files and modules the change would touch.</div>
+<div>3. Risks, and how to settle each one.</div>
+<div>4. Next step, and which squad mate takes it.</div>
+<div style="margin-top: 10px; color: #a09b8c">Reading datasheets and the driver tree<span aria-hidden="true" style="display: inline-block; width: 8px; height: 15px; margin-left: 4px; vertical-align: -2px; background: #c8aa6e; animation: rift-blink 1.06s steps(1) infinite"></span></div>
+</div>
+</section>
+
+<button type="button" class="rift-drawer" style="position: absolute; right: -206px; bottom: 28px; display: flex; align-items: center; gap: 10px; width: 266px; padding: 8px; background: #0c1c30; border: 1px solid #785a28; border-right: 0; border-radius: 6px 0 0 6px; box-shadow: 0 8px 24px #00000080; color: inherit; font: inherit; text-align: left; cursor: pointer; animation: rift-peek 8s ease-in-out infinite">
+<span style="position: relative; width: 44px; height: 44px; flex: none; animation: rift-bob 0.7s ease-in-out infinite">
+<img src="/_blob/10ca85f9c227745b38d0663f7632e262" alt="" style="width: 44px; height: 44px; display: block">
+<span style="position: absolute; top: -3px; right: -3px; width: 16px; height: 16px; border-radius: 50%; background: #e84057; color: #ffffff; font-size: 10px; font-weight: 600; display: flex; align-items: center; justify-content: center">1</span>
+</span>
+<span style="display: flex; flex-direction: column; gap: 2px; min-width: 0">
+<span style="font-family: Cinzel, serif; font-weight: 700; font-size: 12px; color: #ff6b7d">Jhin pinged you</span>
+<span style="font-size: 11px; color: #a09b8c">test-bench is waiting on an answer. Click to go.</span>
+</span>
+</button>
+</div>
+
+<div style="display: flex; align-items: center; gap: 14px; height: 28px; padding: 0 12px; background: #071221; border-top: 1px solid #3c3220; font-size: 11px; color: #a09b8c">
+<span>firmware</span><span>2 in lane</span><span style="color: #ff6b7d">1 pinged you</span><span style="color: #c8aa6e">1 objective taken</span>
+</div>
+</main>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { picked: 'teemo' };
+  }
+  renderVals() {
+    const WORD = { working: 'In lane', blocked: 'Pinged you', done: 'Objective taken', idle: 'At base', off: '' };
+    const COLOR = { working: '#0ac8b9', blocked: '#ff6b7d', done: '#c8aa6e', idle: '#a09b8c', off: '#a09b8c' };
+    const roster = [
+      { id: 'teemo', img: '/_blob/10ca85f9c227745b38d0663f7632e262', name: 'Teemo', title: 'the Swift Scout', lane: 'SCOUT', st: 'working', channel: '2.4s' },
+      { id: 'heimerdinger', img: '/_blob/c9539ae889f9665140799b5e1b15c9a8', name: 'Heimerdinger', title: 'the Revered Inventor', lane: 'FIRMWARE', st: 'working', channel: '3.1s' },
+      { id: 'jhin', img: '/_blob/85fd452b71527b45c85384a6750fae8b', name: 'Jhin', title: 'the Virtuoso', lane: 'TESTS', st: 'blocked' },
+      { id: 'caitlyn', img: '/_blob/6f99c7c9f652992ab7916341b697052b', name: 'Caitlyn', title: 'the Sheriff', lane: 'DEBUG', st: 'idle' },
+      { id: 'braum', img: '/_blob/d528067e9fcbca07e6ce66359ffd9e66', name: 'Braum', title: 'the Shield', lane: 'REVIEW', st: 'done' },
+      { id: 'ryze', img: '/_blob/ec748fd107bce5f69a0cfacccc8f8f52', name: 'Ryze', title: 'the Rune Mage', lane: 'DOCS', st: 'off' },
+      { id: 'twistedfate', img: '/_blob/5e77c087aa10bebe0bc8bc8cd6a0ba5b', name: 'Twisted Fate', title: 'the Card Master', lane: 'FLEET', st: 'off' },
+      { id: 'bard', img: '/_blob/75cd7fa0eb17e6a4b11f5407253dcf48', name: 'Bard', title: 'the Wandering Caretaker', lane: 'SIDE QUESTS', st: 'off' },
+    ];
+    const picked = this.state.picked;
+    const champs = roster.map((c) => {
+      const on = c.st !== 'off';
+      const selected = c.id === picked;
+      return {
+        ...c,
+        selected,
+        working: c.st === 'working',
+        blocked: c.st === 'blocked',
+        word: on ? WORD[c.st] : 'Summon',
+        wordColor: on ? COLOR[c.st] : '#c8aa6e',
+        sub: on ? c.title : c.lane,
+        nameColor: on ? '#f0e6d2' : '#a09b8c',
+        imgOpacity: on ? 1 : 0.38,
+        channel: c.channel || '2.4s',
+        border: selected ? '#785a28' : 'transparent',
+        bg: selected ? '#17304d' : 'transparent',
+        pick: () => this.setState({ picked: c.id }),
+      };
+    });
+    return { champs, sel: champs.find((c) => c.selected) || champs[0] };
+  }
+}
+</script>
+</body>
+</html>

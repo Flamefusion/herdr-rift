@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+<defs><clipPath id="c"><circle cx="32" cy="32" r="29"/></clipPath></defs>
+<g clip-path="url(#c)">
+<rect width="64" height="64" fill="#1c2f3f"/>
+
+<g fill="#e9c94c"><circle cx="16" cy="20" r="12"/><circle cx="32" cy="13" r="13"/><circle cx="48" cy="20" r="12"/><circle cx="10" cy="34" r="9"/><circle cx="54" cy="34" r="9"/><circle cx="24" cy="24" r="10"/><circle cx="40" cy="24" r="10"/></g>
+<g fill="#c9a62f"><circle cx="22" cy="14" r="2.2"/><circle cx="40" cy="10" r="2.2"/><circle cx="49" cy="24" r="2"/><circle cx="14" cy="27" r="2"/></g>
+<ellipse cx="32" cy="43" rx="14" ry="15" fill="#d9a877"/>
+<circle cx="25" cy="38" r="6.5" fill="#12333a" stroke="#8a6a3a" stroke-width="2.2"/><circle cx="39" cy="38" r="6.5" fill="#12333a" stroke="#8a6a3a" stroke-width="2.2"/>
+<circle cx="25" cy="38" r="3.4" fill="#0ac8b9"/><circle cx="39" cy="38" r="3.4" fill="#0ac8b9"/>
+<path d="M31 38h2" stroke="#8a6a3a" stroke-width="2.2"/>
+<path d="M32 46Q24 44 17 52Q26 53 32 49Q38 53 47 52Q40 44 32 46Z" fill="#f4efe2"/>
+</g>
+<circle cx="32" cy="32" r="30" fill="none" stroke="#c8aa6e" stroke-width="2.5"/><circle cx="32" cy="32" r="27.5" fill="none" stroke="#785a28" stroke-width="1"/>
+</svg>
