@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
 body{margin:0}
+img:not([src$="ca0a4f592577b4fcd0427d2fbb87903b"]){border-radius:50%;box-shadow:0 0 0 1.5px #785a28}
 a{color:#c8aa6e}a:hover{color:#f0d896}
 @keyframes hud-spin{to{transform:rotate(360deg)}}
 @keyframes hud-pulse{0%,100%{opacity:.25}50%{opacity:1}}
@@ -42,16 +43,16 @@ button:focus-visible{outline:2px solid #f0d896;outline-offset:2px}
 <span style="margin-left: auto; color: {{sel.color}}">{{sel.word}}</span>
 </div>
 <div style="flex: 1; padding: 14px 12px; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 13px; line-height: 1.6; color: #cdbe91; overflow: hidden">
-<div style="color: #a09b8c">~/firmware $ claude -n Heimerdinger</div>
-<div style="color: #f0e6d2; margin-top: 10px">&gt; add the fuel-gauge driver behind the existing battery contract</div>
-<div style="margin-top: 10px">Reading the contract and the nearest driver first.</div>
-<div>Writing the driver, then its unit tests.</div>
+<div style="color: #a09b8c">~/firmware $ claude -n Viktor</div>
+<div style="color: #f0e6d2; margin-top: 10px">&gt; build the fuel-gauge driver from Heimerdinger's plan</div>
+<div style="margin-top: 10px">Following the plan, one step per commit.</div>
+<div>Writing the driver, then handing it to Jhin and Braum.</div>
 <div style="margin-top: 10px; color: #a09b8c">Building<span aria-hidden="true" style="display: inline-block; width: 8px; height: 15px; margin-left: 4px; vertical-align: -2px; background: #c8aa6e; animation: hud-blink 1.06s steps(1) infinite"></span></div>
 </div>
 </section>
 <section style="flex: 2 1 300px; min-width: 0; display: flex; flex-direction: column; background: #06101c; border: 1px solid #3c3220; border-radius: 2px">
 <div style="display: flex; align-items: center; gap: 8px; height: 28px; padding: 0 10px; border-bottom: 1px solid #3c3220; font-size: 12px; color: #a09b8c">
-<img src="/_blob/85fd452b71527b45c85384a6750fae8b" alt="" style="width: 16px; height: 16px">
+<img src="/_blob/239ae220c1bd3603001dd5333fdf928d" alt="" style="width: 16px; height: 16px">
 <span style="color: #f0e6d2; font-weight: 500">Jhin</span><span>TESTS</span>
 <span style="margin-left: auto; color: #ff6b7d; animation: hud-pulse 0.9s ease-in-out infinite">Pinged you</span>
 </div>
@@ -66,9 +67,9 @@ button:focus-visible{outline:2px solid #f0d896;outline-offset:2px}
 
 <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: center; gap: 18px; padding: 10px 14px 12px; background: #071221; border-top: 1px solid #785a28">
 
-<div style="display: flex; align-items: center; gap: 10px; flex: 1 1 220px; min-width: 0">
+<div style="display: flex; align-items: center; gap: 10px; flex: 1 1 180px; min-width: 0">
 <span style="position: relative; width: 56px; height: 56px; flex: none; animation: hud-bob 0.7s ease-in-out infinite">
-<img src="/_blob/10ca85f9c227745b38d0663f7632e262" alt="" style="width: 56px; height: 56px; display: block">
+<img src="/_blob/5f14de5194985ddba7e819b8894434c8" alt="" style="width: 56px; height: 56px; display: block">
 </span>
 <span style="display: flex; flex-direction: column; gap: 3px; min-width: 0; padding: 7px 10px; background: #0c1c30; border: 1px solid #785a28; border-radius: 2px 8px 8px 8px">
 <span style="font-family: Cinzel, serif; font-weight: 700; font-size: 12px; color: #ff6b7d">Jhin pinged you</span>
@@ -76,9 +77,9 @@ button:focus-visible{outline:2px solid #f0d896;outline-offset:2px}
 </span>
 </div>
 
-<div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; padding: 8px 10px; background: #0a1a2b; border: 1px solid #785a28; border-radius: 3px">
+<div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; padding: 8px 10px; background: #0a1a2b; border: 1px solid #785a28; border-radius: 3px">
 <sc-for list="{{champs}}" as="c" hint-placeholder-count="8">
-<button type="button" onClick="{{c.pick}}" aria-pressed="{{c.selected}}" aria-label="{{c.aria}}" style="position: relative; display: flex; flex-direction: column; align-items: center; gap: 5px; width: 66px; padding: 5px 3px 6px; background: {{c.bg}}; border: 1px solid {{c.border}}; border-radius: 2px; color: inherit; font: inherit; cursor: pointer">
+<button type="button" onClick="{{c.pick}}" aria-pressed="{{c.selected}}" aria-label="{{c.aria}}" style="position: relative; display: flex; flex-direction: column; align-items: center; gap: 5px; width: 58px; padding: 5px 3px 6px; background: {{c.bg}}; border: 1px solid {{c.border}}; border-radius: 2px; color: inherit; font: inherit; cursor: pointer">
 <span style="position: relative; width: 44px; height: 44px">
 <img src="{{c.img}}" alt="" style="width: 44px; height: 44px; display: block; opacity: {{c.imgOpacity}}">
 <sc-if value="{{c.working}}" hint-placeholder-val="{{false}}">
@@ -89,8 +90,8 @@ button:focus-visible{outline:2px solid #f0d896;outline-offset:2px}
 </sc-if>
 <span aria-hidden="true" style="position: absolute; left: -4px; bottom: -4px; min-width: 15px; height: 15px; padding: 0 2px; box-sizing: border-box; background: #010a13; border: 1px solid #785a28; border-radius: 2px; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 10px; line-height: 13px; color: #c8aa6e; text-align: center">{{c.key}}</span>
 </span>
-<span style="font-size: 10.5px; font-weight: 500; color: {{c.nameColor}}; max-width: 60px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{c.short}}</span>
-<span aria-hidden="true" style="display: block; width: 52px; height: 4px; background: #10233a; border-radius: 1px; overflow: hidden">
+<span style="font-size: 10.5px; font-weight: 500; color: {{c.nameColor}}; max-width: 52px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{c.short}}</span>
+<span aria-hidden="true" style="display: block; width: 46px; height: 4px; background: #10233a; border-radius: 1px; overflow: hidden">
 <sc-if value="{{c.working}}" hint-placeholder-val="{{false}}"><span style="display: block; height: 4px; background: #0ac8b9; animation: hud-channel {{c.channel}} ease-in-out infinite alternate"></span></sc-if>
 <sc-if value="{{c.solid}}" hint-placeholder-val="{{false}}"><span style="display: block; height: 4px; width: 100%; background: {{c.color}}"></span></sc-if>
 </span>
@@ -98,7 +99,7 @@ button:focus-visible{outline:2px solid #f0d896;outline-offset:2px}
 </sc-for>
 </div>
 
-<div style="display: flex; justify-content: flex-end; flex: 1 1 220px; min-width: 0">
+<div style="display: flex; justify-content: flex-end; flex: 1 1 180px; min-width: 0">
 <div style="display: flex; flex-direction: column; gap: 5px; padding: 8px 10px; background: #0a1a2b; border: 1px solid #3c3220; border-radius: 3px; min-width: 150px">
 <span style="font-family: Cinzel, serif; font-weight: 700; font-size: 10.5px; letter-spacing: 0.1em; color: #c8aa6e">SPACES</span>
 <span style="display: flex; align-items: center; gap: 7px; font-size: 12px"><span aria-hidden="true" style="width: 7px; height: 7px; background: #0ac8b9; transform: rotate(45deg)"></span>firmware</span>
@@ -114,20 +115,25 @@ button:focus-visible{outline:2px solid #f0d896;outline-offset:2px}
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { picked: 'heimerdinger' };
+    this.state = { picked: 'viktor' };
   }
   renderVals() {
     const WORD = { working: 'In lane', blocked: 'Pinged you', done: 'Objective taken', idle: 'At base', off: 'Not summoned' };
     const COLOR = { working: '#0ac8b9', blocked: '#ff6b7d', done: '#c8aa6e', idle: '#6b6658', off: '#a09b8c' };
     const roster = [
-      { id: 'teemo', img: '/_blob/10ca85f9c227745b38d0663f7632e262', name: 'Teemo', short: 'Teemo', lane: 'SCOUT', st: 'working', channel: '2.4s' },
-      { id: 'heimerdinger', img: '/_blob/c9539ae889f9665140799b5e1b15c9a8', name: 'Heimerdinger', short: 'Heimer', lane: 'FIRMWARE', st: 'working', channel: '3.1s' },
-      { id: 'jhin', img: '/_blob/85fd452b71527b45c85384a6750fae8b', name: 'Jhin', short: 'Jhin', lane: 'TESTS', st: 'blocked' },
-      { id: 'caitlyn', img: '/_blob/6f99c7c9f652992ab7916341b697052b', name: 'Caitlyn', short: 'Caitlyn', lane: 'DEBUG', st: 'idle' },
-      { id: 'braum', img: '/_blob/d528067e9fcbca07e6ce66359ffd9e66', name: 'Braum', short: 'Braum', lane: 'REVIEW', st: 'done' },
-      { id: 'ryze', img: '/_blob/ec748fd107bce5f69a0cfacccc8f8f52', name: 'Ryze', short: 'Ryze', lane: 'DOCS', st: 'off' },
-      { id: 'twistedfate', img: '/_blob/5e77c087aa10bebe0bc8bc8cd6a0ba5b', name: 'Twisted Fate', short: 'TF', lane: 'FLEET', st: 'off' },
-      { id: 'bard', img: '/_blob/75cd7fa0eb17e6a4b11f5407253dcf48', name: 'Bard', short: 'Bard', lane: 'SIDE QUESTS', st: 'off' },
+      { id: 'teemo', img: '/_blob/5f14de5194985ddba7e819b8894434c8', name: 'Teemo', short: 'Teemo', lane: 'SCOUT', st: 'working', channel: '2.4s' },
+      { id: 'heimerdinger', img: '/_blob/1f31c1496b17c3a1e20146e75f95bfdd', name: 'Heimerdinger', short: 'Heimer', lane: 'ARCHITECT', st: 'idle' },
+      { id: 'viktor', img: '/_blob/2d601977008b725d8eb932e1cdbb90ed', name: 'Viktor', short: 'Viktor', lane: 'CODER', st: 'working', channel: '3.1s' },
+      { id: 'jhin', img: '/_blob/239ae220c1bd3603001dd5333fdf928d', name: 'Jhin', short: 'Jhin', lane: 'TESTS', st: 'blocked' },
+      { id: 'braum', img: '/_blob/fca8220d5d6d9a0bd11912605522f748', name: 'Braum', short: 'Braum', lane: 'REVIEW', st: 'done' },
+      { id: 'caitlyn', img: '/_blob/9face4f501892ffac696fd623f186462', name: 'Caitlyn', short: 'Caitlyn', lane: 'DEBUG', st: 'idle' },
+      { id: 'ekko', img: '/_blob/5b7d7b5a14572221b1b011573d038915', name: 'Ekko', short: 'Ekko', lane: 'REGRESSIONS', st: 'off' },
+      { id: 'orianna', img: '/_blob/7b13295bb35bd568a35b91d98c0f1bf8', name: 'Orianna', short: 'Orianna', lane: 'BENCH', st: 'off' },
+      { id: 'blitzcrank', img: '/_blob/d119db648fef6e94e40954a9cb8eaf27', name: 'Blitzcrank', short: 'Blitz', lane: 'CI', st: 'off' },
+      { id: 'zilean', img: '/_blob/e3196df7388aa63976c1ecb1d8adf04d', name: 'Zilean', short: 'Zilean', lane: 'NIGHTLIES', st: 'off' },
+      { id: 'ryze', img: '/_blob/b596de46c93de836e84a395b87daba10', name: 'Ryze', short: 'Ryze', lane: 'DOCS', st: 'off' },
+      { id: 'twistedfate', img: '/_blob/60284766d9a6df49cc089205738ba314', name: 'Twisted Fate', short: 'TF', lane: 'FLEET', st: 'off' },
+      { id: 'bard', img: '/_blob/0ef1bad0101e2a0a369a3b446da05603', name: 'Bard', short: 'Bard', lane: 'SIDE QUESTS', st: 'off' },
     ];
     const picked = this.state.picked;
     const champs = roster.map((c, i) => {

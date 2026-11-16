@@ -50,7 +50,8 @@ function summon(c) {
 const who = (a) => champOf(a)?.name ?? a.program?.name ?? "An agent";
 
 function portrait(c, size, t, live) {
-  return image(`${ART}/${c.id}.svg`).w(size).h(size).flex_none().when(!live, (el) => el.opacity(0.38));
+  // Riot's square icon, cut round, in a gold ring.
+  return image(`${ART}/${c.id}.png`).w(size).h(size).flex_none().rounded(size / 2).border_1().border_color(live ? t.accent : t.input).when(!live, (el) => el.opacity(0.38));
 }
 
 function statusMark(t, status) {
@@ -193,7 +194,7 @@ export default class Rift extends View {
     const right = placement()?.edge !== "left";
     const face = div().relative().flex_none().w(40).h(40)
       .when(Boolean(news), (el) => el.loop("top", { from: 0, to: -4, period: 700 }))
-      .child(image(`${ART}/${teemo.id}.svg`).w(40).h(40))
+      .child(portrait(teemo, 40, t, true))
       .when(waiting.length > 0, (el) => el.child(div().absolute().top(-3).right(-3).size(15).rounded(8).bg(t.blocked)
         .flex().items_center().justify_center().text_size(9.5).font_bold().text_color("#ffffff").child(String(waiting.length))));
     const text = v_flex().w(190).gap(2)

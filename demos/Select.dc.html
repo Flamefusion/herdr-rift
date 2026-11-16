@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
 body{margin:0}
+img:not([src$="ca0a4f592577b4fcd0427d2fbb87903b"]){border-radius:50%;box-shadow:0 0 0 1.5px #785a28}
 a{color:#0ac8b9}a:hover{color:#5ff0e3}
 @keyframes sel-spin{to{transform:rotate(360deg)}}
 @keyframes sel-pulse{0%,100%{opacity:.25}50%{opacity:1}}
@@ -35,7 +36,7 @@ button:focus-visible{outline:2px solid #5ff0e3;outline-offset:2px}
 
 <div style="display: flex; flex-wrap: wrap; gap: 6px; padding: 12px 10px 8px; background: #0a1622; border-bottom: 1px solid #1e3a4a">
 <sc-for list="{{champs}}" as="c" hint-placeholder-count="8">
-<button type="button" onClick="{{c.pick}}" aria-pressed="{{c.selected}}" style="position: relative; top: {{c.lift}}; flex: 1 1 120px; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 6px 0; background: {{c.bg}}; border: 1px solid {{c.border}}; border-radius: 2px; color: inherit; font: inherit; cursor: pointer; overflow: hidden">
+<button type="button" onClick="{{c.pick}}" aria-pressed="{{c.selected}}" style="position: relative; top: {{c.lift}}; flex: 1 1 84px; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 6px 0; background: {{c.bg}}; border: 1px solid {{c.border}}; border-radius: 2px; color: inherit; font: inherit; cursor: pointer; overflow: hidden">
 <span style="position: relative; width: 60px; height: 60px">
 <img src="{{c.img}}" alt="" style="width: 60px; height: 60px; display: block; opacity: {{c.imgOpacity}}">
 <sc-if value="{{c.working}}" hint-placeholder-val="{{false}}">
@@ -45,8 +46,8 @@ button:focus-visible{outline:2px solid #5ff0e3;outline-offset:2px}
 <span aria-hidden="true" style="position: absolute; inset: -5px; border-radius: 50%; border: 2px solid #e84057; animation: sel-pulse 0.9s ease-in-out infinite"></span>
 </sc-if>
 </span>
-<span style="font-family: Cinzel, serif; font-weight: 700; font-size: 12.5px; color: {{c.nameColor}}; max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{c.name}}</span>
-<span style="font-size: 10.5px; letter-spacing: 0.08em; color: #a09b8c">{{c.lane}}</span>
+<span style="font-family: Cinzel, serif; font-weight: 700; font-size: 12.5px; color: {{c.nameColor}}; max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{c.short}}</span>
+<span style="font-size: 10px; color: #a09b8c; max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{c.lane}}</span>
 <span style="align-self: stretch; margin: 2px -6px 0; padding: 4px 0; background: {{c.ribbon}}; font-size: 10.5px; font-weight: 600; color: {{c.ribbonText}}; text-align: center">{{c.word}}</span>
 <span aria-hidden="true" style="align-self: stretch; margin: 0 -6px; height: 3px; background: #10233a; display: block">
 <sc-if value="{{c.working}}" hint-placeholder-val="{{false}}"><span style="display: block; height: 3px; background: #5ff0e3; animation: sel-channel {{c.channel}} ease-in-out infinite alternate"></span></sc-if>
@@ -78,7 +79,7 @@ button:focus-visible{outline:2px solid #5ff0e3;outline-offset:2px}
 <span style="font-size: 11px; color: #a09b8c">Waiting on an answer in test-bench.</span>
 </span>
 <span style="position: relative; width: 60px; height: 60px; flex: none; animation: sel-bob 0.7s ease-in-out infinite">
-<img src="/_blob/10ca85f9c227745b38d0663f7632e262" alt="Teemo" style="width: 60px; height: 60px; display: block">
+<img src="/_blob/5f14de5194985ddba7e819b8894434c8" alt="Teemo" style="width: 60px; height: 60px; display: block">
 <span style="position: absolute; top: -2px; right: -2px; width: 17px; height: 17px; border-radius: 50%; background: #e84057; color: #ffffff; font-size: 10px; font-weight: 600; display: flex; align-items: center; justify-content: center">1</span>
 </span>
 </div>
@@ -93,18 +94,23 @@ class Component extends DCLogic {
     this.state = { picked: 'braum' };
   }
   renderVals() {
-    const WORD = { working: 'IN LANE', blocked: 'PINGED YOU', done: 'OBJECTIVE TAKEN', idle: 'AT BASE', off: 'SUMMON' };
+    const WORD = { working: 'IN LANE', blocked: 'PINGED', done: 'TAKEN', idle: 'AT BASE', off: 'SUMMON' };
     const RIBBON = { working: '#0b3b3f', blocked: '#5c1622', done: '#4a3a14', idle: '#10233a', off: 'transparent' };
     const TEXT = { working: '#5ff0e3', blocked: '#ffb3bd', done: '#f0d896', idle: '#a09b8c', off: '#c8aa6e' };
     const roster = [
-      { id: 'teemo', img: '/_blob/10ca85f9c227745b38d0663f7632e262', name: 'Teemo', title: 'the Swift Scout', lane: 'SCOUT', st: 'working', channel: '2.4s', job: 'Scouts projects, features, fixes and concepts' },
-      { id: 'heimerdinger', img: '/_blob/c9539ae889f9665140799b5e1b15c9a8', name: 'Heimerdinger', title: 'the Revered Inventor', lane: 'FIRMWARE', st: 'working', channel: '3.1s', job: 'Builds firmware' },
-      { id: 'jhin', img: '/_blob/85fd452b71527b45c85384a6750fae8b', name: 'Jhin', title: 'the Virtuoso', lane: 'TESTS', st: 'blocked', job: 'Writes test automation' },
-      { id: 'caitlyn', img: '/_blob/6f99c7c9f652992ab7916341b697052b', name: 'Caitlyn', title: 'the Sheriff', lane: 'DEBUG', st: 'idle', job: 'Finds the root cause' },
-      { id: 'braum', img: '/_blob/d528067e9fcbca07e6ce66359ffd9e66', name: 'Braum', title: 'the Shield', lane: 'REVIEW', st: 'done', job: 'Reviews and guards the branch' },
-      { id: 'ryze', img: '/_blob/ec748fd107bce5f69a0cfacccc8f8f52', name: 'Ryze', title: 'the Rune Mage', lane: 'DOCS', st: 'off', job: 'Writes ADRs, SOPs and changelogs' },
-      { id: 'twistedfate', img: '/_blob/5e77c087aa10bebe0bc8bc8cd6a0ba5b', name: 'Twisted Fate', title: 'the Card Master', lane: 'FLEET', st: 'off', job: 'Releases and fleet rollouts' },
-      { id: 'bard', img: '/_blob/75cd7fa0eb17e6a4b11f5407253dcf48', name: 'Bard', title: 'the Wandering Caretaker', lane: 'SIDE QUESTS', st: 'off', job: 'Takes the side jobs' },
+      { id: 'teemo', img: '/_blob/5f14de5194985ddba7e819b8894434c8', name: 'Teemo', short: 'Teemo', title: 'the Swift Scout', lane: 'SCOUT', st: 'working', channel: '2.4s', job: 'Scouts projects, features, fixes and concepts' },
+      { id: 'heimerdinger', img: '/_blob/1f31c1496b17c3a1e20146e75f95bfdd', name: 'Heimerdinger', short: 'Heimer', title: 'the Revered Inventor', lane: 'ARCHITECT', st: 'idle', job: 'Designs the approach and the plan' },
+      { id: 'viktor', img: '/_blob/2d601977008b725d8eb932e1cdbb90ed', name: 'Viktor', short: 'Viktor', title: 'the Herald of the Arcane', lane: 'CODER', st: 'working', channel: '3.1s', job: 'Builds what the plan says' },
+      { id: 'jhin', img: '/_blob/239ae220c1bd3603001dd5333fdf928d', name: 'Jhin', short: 'Jhin', title: 'the Virtuoso', lane: 'TESTS', st: 'blocked', job: 'Writes test automation' },
+      { id: 'braum', img: '/_blob/fca8220d5d6d9a0bd11912605522f748', name: 'Braum', short: 'Braum', title: 'the Heart of the Freljord', lane: 'REVIEW', st: 'done', job: 'Reviews pull requests' },
+      { id: 'caitlyn', img: '/_blob/9face4f501892ffac696fd623f186462', name: 'Caitlyn', short: 'Caitlyn', title: 'the Sheriff of Piltover', lane: 'DEBUG', st: 'idle', job: 'Finds the root cause' },
+      { id: 'ekko', img: '/_blob/5b7d7b5a14572221b1b011573d038915', name: 'Ekko', short: 'Ekko', title: 'the Boy Who Shattered Time', lane: 'REGRESSIONS', st: 'off', job: 'Bisects and hunts regressions' },
+      { id: 'orianna', img: '/_blob/7b13295bb35bd568a35b91d98c0f1bf8', name: 'Orianna', short: 'Orianna', title: 'the Lady of Clockwork', lane: 'BENCH', st: 'off', job: 'Runs the bench and reads measurements' },
+      { id: 'blitzcrank', img: '/_blob/d119db648fef6e94e40954a9cb8eaf27', name: 'Blitzcrank', short: 'Blitz', title: 'the Great Steam Golem', lane: 'CI', st: 'off', job: 'Branches, pull requests and CI' },
+      { id: 'zilean', img: '/_blob/e3196df7388aa63976c1ecb1d8adf04d', name: 'Zilean', short: 'Zilean', title: 'the Chronokeeper', lane: 'NIGHTLIES', st: 'off', job: 'Nightly and long runs' },
+      { id: 'ryze', img: '/_blob/b596de46c93de836e84a395b87daba10', name: 'Ryze', short: 'Ryze', title: 'the Rune Mage', lane: 'DOCS', st: 'off', job: 'Writes ADRs, SOPs and changelogs' },
+      { id: 'twistedfate', img: '/_blob/60284766d9a6df49cc089205738ba314', name: 'Twisted Fate', short: 'TF', title: 'the Card Master', lane: 'FLEET', st: 'off', job: 'Releases and fleet rollouts' },
+      { id: 'bard', img: '/_blob/0ef1bad0101e2a0a369a3b446da05603', name: 'Bard', short: 'Bard', title: 'the Wandering Caretaker', lane: 'SIDE QUESTS', st: 'off', job: 'Takes the side jobs' },
     ];
     const picked = this.state.picked;
     const champs = roster.map((c) => {
